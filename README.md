@@ -2,11 +2,29 @@
 
 **GOJI** stands for: **Groovy-oriented** and **JSON-implying.**
 
-This clients wraps around [Apache httpclient](https://hc.apache.org/httpcomponents-client-ga/) and [Jackson 'databind'](https://github.com/FasterXML/jackson-databind) libraries with lean Groovy syntax:
+## Table of contents
+
+* [Intro](#intro)
+* [Request examples](#requests)
+   * [Supported HTTP methods](#http-methods)
+   * [A request to an arbitrary url](#url)
+   * [Base url](#base-url)
+   * [Request headers](#request-headers)
+   * [Request body](#request-body)
+* [Handling responses](#responses)
+   * [Response status code](#status)
+   * [Response headers](#response-headers)
+   * [Response body](#response-body)
+   * [Deserializing JSONs to Java object](#jsons)
+   * [Deserializing JSONs to Java generics](#generics)
+    
+<a id='intro'></a>
+## Intro
+This clients wraps around [Apache HttpClient](https://hc.apache.org/httpcomponents-client-ga/) and [Jackson Databind](https://github.com/FasterXML/jackson-databind) libraries with lean Groovy syntax:
 ```groovy
 given:
 def http = new HttpClient(
-    url: 'http://localhost')
+    baseUrl: 'http://ice-cream-service.be')
     
 when:
 def response = http.post(
@@ -21,6 +39,133 @@ then:
 response.statusCode == ResponseCode.OK
 response.body == new BananaIceCream(
     sprinkles: true)
+```
+
+<a id='requests'></a>
+## Request examples
+
+<a id='http-methods'></a>
+### Supported HTTP methods:
+
+`GET`, `POST`, `PUT` and `DELETE` are supported:
+```groovy
+http.get()
+http.post()
+http.put()
+http.delete()
+```
+
+<a id='url'></a>
+### A request to an arbitrary url:
+
+```groovy
+http.get(
+    url: 'http://pizza-delivery.org/margheritas')
+```
+
+<a id='base-url'></a>
+### Base url:
+
+If you want to make a number of requests to a given service, you can specify `baseUrl` constructor parameter:
+```groovy
+def http = new HttpClient(
+    baseUrl: 'http://water-melon.com')
+    
+http.post(
+    path: '/cut')
+```
+
+<a id='request-headers'></a>
+### Request headers:
+
+```groovy
+http.put(
+    path: '/put',
+    headers: [
+        Accept: 'application/json',
+        'Content-Type': 'application/json'])
+```
+
+<a id='request-body'></a>
+### Request body:
+
+Any non-string body is serialized as JSON.
+
+`String`:
+```groovy
+http.delete(
+    path: '/delete',
+    body: '<xml></xml>')
+```
+`Map`:
+```groovy
+http.get(
+    path: '/get',
+    body: [
+        key: 'value']) 
+```
+
+<a id='responses'></a>
+## Handling responses
+
+<a id='status'></a>
+### Response status code
+
+```groovy
+def response = http.get(
+    path: '/get')
+    
+asssert response.statusCode == ResponseCode.OK
+```
+
+<a id='response-headers'></a>
+### Response headers
+
+```groovy
+def response = http.get(
+    path: '/get')
+    
+assert response.headers == [
+    'Content-Type': [
+        'application/json',
+        'applcation/vnd.tomtom+json'],
+    Connection: 'keep-alive'] 
+```
+
+<a id='response-body'></a>
+### Response body
+
+By default, response body is represented as a String:
+```groovy
+Response<String> response = http.get(
+    path: '/get')
+    
+assert response.body == 'A string'
+```
+
+<a id='jsons'></a>
+### Deserializing JSONs to Java object
+
+Response body can be deserialized to a Java object (assuming it's a JSON).
+```groovy
+Response<Map> response = http.get(
+    path: '/get',
+    expecting: Map)
+    
+assert response.body == [key: 'value']
+```
+
+<a id='generics'></a>
+### Deserializing JSONs to Java generics
+
+```groovy
+Response<List<Map>> response = http.get(
+    path: '/get',
+    expecting: List, of: Map)
+    
+assert response.body == [
+    [key: 'value'],
+    ['another-key': 'another value']]
 ```
 
 See more use-cases in [integration tests](src/integration-test/groovy)
