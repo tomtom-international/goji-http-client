@@ -35,7 +35,7 @@ limitations under the License.
     
 <a id='intro'></a>
 ## Intro
-This clients wraps around [Apache HttpClient](https://hc.apache.org/httpcomponents-client-ga/) and [Jackson Databind](https://github.com/FasterXML/jackson-databind) libraries with lean Groovy syntax:
+This clients wraps around [Apache HttpClient](https://hc.apache.org/httpcomponents-client-ga/) and [Jackson Databind](https://github.com/FasterXML/jackson-databind) libraries providing lean Groovy syntax:
 ```groovy
 given:
 def http = new HttpClient(
@@ -130,7 +130,7 @@ http.get(
 def response = http.get(
     path: '/get')
     
-asssert response.statusCode == ResponseCode.OK
+assert response.statusCode == ResponseCode.OK
 ```
 
 <a id='response-headers'></a>
@@ -143,7 +143,7 @@ def response = http.get(
 assert response.headers == [
     'Content-Type': [
         'application/json',
-        'applcation/vnd.tomtom+json'],
+        'application/vnd.tomtom+json'],
     Connection: 'keep-alive'] 
 ```
 
