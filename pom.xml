@@ -21,8 +21,9 @@
     <version>1.0.0</version>
     <name>GOJI HTTP Client</name>
     <description>
-        Wrapper around Apache 'httpclient' and Jackson 'databind' libraries with lean Groovy syntax.
+        A wrapper around Apache HttpClient and Jackson Databind libraries with lean Groovy syntax.
     </description>
+    <url>https://github.com/tomtom-international/goji-http-client</url>
 
     <developers>
         <developer>
@@ -43,7 +44,6 @@
         <name>TomTom International BV</name>
         <url>http://tomtom.com</url>
     </organization>
-    <url>http://tomtom.com</url>
     <scm>
         <url>http://github.com/tomtom-international/goji-http-client</url>
     </scm>
@@ -57,7 +57,7 @@
         <log4j.version>1.2.17</log4j.version>
         <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
+        <groovydoc-maven-plugin.version>2.1</groovydoc-maven-plugin.version>
         <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-site-plugin.version>3.6</maven-site-plugin.version>
@@ -130,6 +130,13 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -150,14 +157,15 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
+                <groupId>com.bluetrainsoftware.maven</groupId>
+                <artifactId>groovydoc-maven-plugin</artifactId>
+                <version>${groovydoc-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>attach-javadocs</id>
+                        <id>attach-docs</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>attach-docs</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -277,9 +285,9 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
+                <groupId>com.bluetrainsoftware.maven</groupId>
+                <artifactId>groovydoc-maven-plugin</artifactId>
+                <version>${groovydoc-maven-plugin.version}</version>
             </plugin>
         </plugins>
     </reporting>
