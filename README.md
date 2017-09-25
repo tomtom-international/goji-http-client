@@ -2,7 +2,7 @@
 
 **GOJI** stands for: **Groovy-oriented** and **JSON-implying.**
 
-# License
+## License
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ limitations under the License.
 ## Table of contents
 
 * [Intro](#intro)
+* [Usage](#usage)
+   * [Maven](#maven)
 * [Request examples](#requests)
    * [Supported HTTP methods](#http-methods)
    * [A request to an arbitrary url](#url)
@@ -54,6 +56,20 @@ then:
 response.statusCode == ResponseCode.OK
 response.body == new BananaIceCream(
     sprinkles: true)
+```
+
+<a id='usage'></a>
+## Usage
+
+<a id='maven'></a>
+### Maven
+
+```xml
+<dependency>
+    <groupId>com.tomtom.http</groupId>
+    <artifactId>goji-http-client</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
 <a id='requests'></a>
