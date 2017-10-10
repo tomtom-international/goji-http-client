@@ -47,6 +47,12 @@ class HttpClient {
         this([:])
     }
 
+    /**
+     * Builds {@link HttpClient} with a number of (optional) parameters.
+     * @param baseUrl a url prefix for request {@code path} parameter
+     * @param client a custom {@link org.apache.http.client.HttpClient}
+     * @param mapper a custom {@link ObjectMapper}
+     */
     HttpClient(
             Map properties) {
         client = properties['client'] as org.apache.http.client.HttpClient ?:
