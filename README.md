@@ -238,4 +238,7 @@ None yet!
 
 <kirill.artamonov@tomtom.com>
 
-_**Disclaimer:**_ Our primary use-case of this http client is testing our REST services. The client has not been tested for any production use. The client has no verification of https certificates et al.
+<a id="disclaimer">
+### Disclaimer
+
+Our primary use-case of this http client is testing our REST services. The client has not been tested for any production use though we don't expect big issues there.
