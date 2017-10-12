@@ -112,8 +112,8 @@ If you want to make a number of requests to a given service, you can specify the
 def http = new HttpClient(
     baseUrl: 'http://water-melon.com')
     
-http.post(
-    path: '/cut')
+http.get(
+    path: '/slice')
 ```
 
 <a id='request-headers'></a>
@@ -140,10 +140,10 @@ http.delete(
 ```
 `Map`:
 ```groovy
-http.get(
-    path: '/get',
-    body: [
-        key: 'value']) 
+http.put(
+    path: '/put',
+        body: [
+          key: 'value']) 
 ```
 
 <a id='responses'></a>
@@ -194,6 +194,14 @@ Response<Map> response = http.get(
     expecting: Map)
     
 assert response.body == [key: 'value']
+```
+
+```groovy
+Response<BananaIceCream> response = http.get(
+    path: '/ice-cream?banana=true',
+    expecting: BananaIceCream)
+    
+assert response.body instanceof BananaIceCream
 ```
 
 <a id='generics'></a>
