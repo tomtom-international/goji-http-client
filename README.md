@@ -238,7 +238,7 @@ None yet!
 
 <kirill.artamonov@tomtom.com>
 
-<a id="disclaimer">
+<a id="disclaimer"></a>
 ### Disclaimer
 
 Our primary use-case of this http client is testing our REST services. The client has not been tested for any production use though we don't expect big issues there.
