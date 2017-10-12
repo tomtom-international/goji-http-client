@@ -20,10 +20,12 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tomtom.http.response.Response
+import groovy.transform.PackageScope
 import org.apache.http.HttpEntity
 import org.apache.http.HttpResponse
 import org.apache.http.util.EntityUtils
 
+@PackageScope
 class ResponseParser {
 
     private mapper = new ObjectMapper()
@@ -56,7 +58,8 @@ class ResponseParser {
                     typeOf(rawType, subtype) : typeOf(rawType)
             try {
                 return mapper.readValue(content, type)
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                println "Failed to deserialize $content to $rawType due to $e.message, defaulting to string"
             }
         }
         content

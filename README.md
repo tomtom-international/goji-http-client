@@ -20,6 +20,7 @@ limitations under the License.
 ## Table of contents
 
 * [Intro](#intro)
+* [Changelog](#changelog)
 * [Usage](#usage)
    * [Maven](#maven)
 * [Request examples](#requests)
@@ -57,6 +58,13 @@ response.statusCode == ResponseCode.OK
 response.body == new BananaIceCream(
     sprinkles: true)
 ```
+
+<a id='changelog'></a>
+## Changelog
+* [1.0.0](http://mvnrepository.com/artifact/com.tomtom.http/goji-http-client/1.0.0>)
+  * initial release
+* [1.1.0](http://mvnrepository.com/artifact/com.tomtom.http/goji-http-client/1.1.0>)
+  * (doc) maven usage and javadocs
 
 <a id='usage'></a>
 ## Usage

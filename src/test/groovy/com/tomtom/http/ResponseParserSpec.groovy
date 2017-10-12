@@ -153,7 +153,6 @@ class ResponseParserSpec extends Specification {
 
 }
 
-
 @EqualsAndHashCode
 @ToString
 class Person {

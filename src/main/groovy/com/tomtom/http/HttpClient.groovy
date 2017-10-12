@@ -82,6 +82,15 @@ class HttpClient {
                 .build()
     }
 
+    /**
+     * Possible properties:<br/>
+     * &emsp;<b>path</b> - a request path (appended to a base url defined at {@link #HttpClient(Map)} constructor)<br/>
+     * &emsp;<b>url</b> - a full request url (overrides path and base url)<br/>
+     * &emsp;<b>headers</b> as {@link Map}<br/>
+     * &emsp;<b>body</b> - a request body. Anything except {@link String} is serialized to a <a href="https://en.wikipedia.org/wiki/JSON">json</a>.<br/>
+     * &emsp;<b>expecting</b> - a class to deserialize response body to. If not specified, response body is a {@link String}<br/>
+     * &emsp;<b>of</b> - a subclass to deserialize response body to. Use to deserialize generic responses like {@link Collection}<{@link Map}>.
+     */
     Response head(
             Map properties) {
         def all = properties +
@@ -89,6 +98,15 @@ class HttpClient {
         performRequest all
     }
 
+    /**
+     * Possible properties:<br/>
+     * &emsp;<b>path</b> - a request path (appended to a base url defined at {@link #HttpClient(Map)} constructor)<br/>
+     * &emsp;<b>url</b> - a full request url (overrides path and base url)<br/>
+     * &emsp;<b>headers</b> as {@link Map}<br/>
+     * &emsp;<b>body</b> - a request body. Anything except {@link String} is serialized to a <a href="https://en.wikipedia.org/wiki/JSON">json</a>.<br/>
+     * &emsp;<b>expecting</b> - a class to deserialize response body to. If not specified, response body is a {@link String}<br/>
+     * &emsp;<b>of</b> - a subclass to deserialize response body to. Use to deserialize generic responses like {@link Collection}<{@link Map}>.
+     */
     Response get(
             Map properties) {
         def all = properties +
@@ -96,6 +114,15 @@ class HttpClient {
         performRequest all
     }
 
+    /**
+     * Possible properties:<br/>
+     * &emsp;<b>path</b> - a request path (appended to a base url defined at {@link #HttpClient(Map)} constructor)<br/>
+     * &emsp;<b>url</b> - a full request url (overrides path and base url)<br/>
+     * &emsp;<b>headers</b> as {@link Map}<br/>
+     * &emsp;<b>body</b> - a request body. Anything except {@link String} is serialized to a <a href="https://en.wikipedia.org/wiki/JSON">json</a>.<br/>
+     * &emsp;<b>expecting</b> - a class to deserialize response body to. If not specified, response body is a {@link String}<br/>
+     * &emsp;<b>of</b> - a subclass to deserialize response body to. Use to deserialize generic responses like {@link Collection}<{@link Map}>.
+     */
     Response post(
             Map properties) {
         def all = properties +
@@ -103,6 +130,15 @@ class HttpClient {
         performRequest all
     }
 
+    /**
+     * Possible properties:<br/>
+     * &emsp;<b>path</b> - a request path (appended to a base url defined at {@link #HttpClient(Map)} constructor)<br/>
+     * &emsp;<b>url</b> - a full request url (overrides path and base url)<br/>
+     * &emsp;<b>headers</b> as {@link Map}<br/>
+     * &emsp;<b>body</b> - a request body. Anything except {@link String} is serialized to a <a href="https://en.wikipedia.org/wiki/JSON">json</a>.<br/>
+     * &emsp;<b>expecting</b> - a class to deserialize response body to. If not specified, response body is a {@link String}<br/>
+     * &emsp;<b>of</b> - a subclass to deserialize response body to. Use to deserialize generic responses like {@link Collection}<{@link Map}>.
+     */
     Response put(
             Map properties) {
         def all = properties +
@@ -110,6 +146,15 @@ class HttpClient {
         performRequest all
     }
 
+    /**
+     * Possible properties:<br/>
+     * &emsp;<b>path</b> - a request path (appended to a base url defined at {@link #HttpClient(Map)} constructor)<br/>
+     * &emsp;<b>url</b> - a full request url (overrides path and base url)<br/>
+     * &emsp;<b>headers</b> as {@link Map}<br/>
+     * &emsp;<b>body</b> - a request body. Anything except {@link String} is serialized to a <a href="https://en.wikipedia.org/wiki/JSON">json</a>.<br/>
+     * &emsp;<b>expecting</b> - a class to deserialize response body to. If not specified, response body is a {@link String}<br/>
+     * &emsp;<b>of</b> - a subclass to deserialize response body to. Use to deserialize generic responses like {@link Collection}<{@link Map}>.
+     */
     Response delete(
             Map properties) {
         def all = properties +
