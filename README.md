@@ -71,6 +71,8 @@ The library is initially intended for writing easily readable unit-tests but can
 <a id='usage'></a>
 ## Usage
 
+GOJI HTTP uses the [semantic versioning](http://semver.org/) strategy: MAJOR.MINOR.PATCH.
+
 <a id='maven'></a>
 ### Maven
 
@@ -78,7 +80,7 @@ The library is initially intended for writing easily readable unit-tests but can
 <dependency>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -218,5 +220,22 @@ assert response.body == [
 ```
 
 See more use-cases in [integration tests](src/integration-test/groovy)
+
+<a id='todo'></a>
+### Future work
+
+- Verify HTTPS certificates
+- Document URL encoding behavior
+- Allow specifying `Authorization` header in constructor
+
+<a id='bugs'></a>
+### Known bugs
+
+None yet!
+
+<a id='contact'></a>
+### Contact
+
+<kirill.artamonov@tomtom.com>
 
 _**Disclaimer:**_ Our primary use-case of this http client is testing our REST services. The client has not been tested for any production use. The client has no verification of https certificates et al.
