@@ -38,7 +38,7 @@ limitations under the License.
     
 <a id='intro'></a>
 ## Intro
-This clients wraps around [Apache HttpClient](https://hc.apache.org/httpcomponents-client-ga/) and [Jackson Databind](https://github.com/FasterXML/jackson-databind) libraries providing lean Groovy syntax:
+This client wraps around [Apache HttpClient](https://hc.apache.org/httpcomponents-client-ga/) and [Jackson Databind](https://github.com/FasterXML/jackson-databind) libraries providing lean Groovy syntax:
 ```groovy
 given:
 def http = new HttpClient(
@@ -105,7 +105,7 @@ http.get(
 <a id='base-url'></a>
 ### Base url:
 
-If you want to make a number of requests to a given service, you can specify `baseUrl` constructor parameter:
+If you want to make a number of requests to a given service, you can specify the `baseUrl` constructor parameter:
 ```groovy
 def http = new HttpClient(
     baseUrl: 'http://water-melon.com')
@@ -174,7 +174,7 @@ assert response.headers == [
 <a id='response-body'></a>
 ### Response body
 
-By default, response body is represented as a String:
+By default, the response body is a String:
 ```groovy
 Response<String> response = http.get(
     path: '/get')
@@ -183,9 +183,9 @@ assert response.body == 'A string'
 ```
 
 <a id='jsons'></a>
-### Deserializing JSONs to Java object
+### Deserializing JSON responses to Java object
 
-Response body can be deserialized to a Java object (assuming it's a JSON).
+A valid JSON response body can be deserialized into a Java object.
 ```groovy
 Response<Map> response = http.get(
     path: '/get',
@@ -195,7 +195,7 @@ assert response.body == [key: 'value']
 ```
 
 <a id='generics'></a>
-### Deserializing JSONs to Java generics
+### Deserializing JSON responses to Java generics
 
 ```groovy
 Response<List<Map>> response = http.get(
