@@ -1,6 +1,6 @@
 # GOJI HTTP Client
 
-**GOJI** stands for: **Groovy-oriented** and **JSON-implying.**
+**GOJI** stands for: **Groovy-oriented** and **JSON-implying.** [![Build Status](https://travis-ci.org/tomtom-international/goji-http-client.svg?branch=master)](https://travis-ci.org/tomtom-international/goji-http-client)
 
 ## License
 
