@@ -33,12 +33,16 @@ limitations under the License.
    * [Response status code](#status)
    * [Response headers](#response-headers)
    * [Response body](#response-body)
-   * [Deserializing JSONs to Java object](#jsons)
-   * [Deserializing JSONs to Java generics](#generics)
+   * [Deserializing JSON responses to Java objects](#jsons)
+   * [Deserializing JSON responses to Java generics](#generics)
+* [Future work](#todo)
+* [Known bugs](#bugs)
+* [Contact](#contact)
+* [Disclaimer](#disclaimer)
     
 <a id='intro'></a>
 ## Intro
-This clients wraps around [Apache HttpClient](https://hc.apache.org/httpcomponents-client-ga/) and [Jackson Databind](https://github.com/FasterXML/jackson-databind) libraries providing lean Groovy syntax:
+This client wraps around [Apache HttpClient](https://hc.apache.org/httpcomponents-client-ga/) and [Jackson Databind](https://github.com/FasterXML/jackson-databind) libraries providing lean Groovy syntax:
 ```groovy
 given:
 def http = new HttpClient(
@@ -59,6 +63,8 @@ response.body == new BananaIceCream(
     sprinkles: true)
 ```
 
+The library is initially intended for writing easily readable unit-tests but can also but used in other Groovy scripts. 
+
 <a id='changelog'></a>
 ## Changelog
 * [1.0.0](http://mvnrepository.com/artifact/com.tomtom.http/goji-http-client/1.0.0>)
@@ -69,6 +75,8 @@ response.body == new BananaIceCream(
 <a id='usage'></a>
 ## Usage
 
+GOJI HTTP uses the [semantic versioning](http://semver.org/) strategy: MAJOR.MINOR.PATCH.
+
 <a id='maven'></a>
 ### Maven
 
@@ -76,7 +84,7 @@ response.body == new BananaIceCream(
 <dependency>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -105,13 +113,13 @@ http.get(
 <a id='base-url'></a>
 ### Base url:
 
-If you want to make a number of requests to a given service, you can specify `baseUrl` constructor parameter:
+If you want to make a number of requests to a given service, you can specify the `baseUrl` constructor parameter:
 ```groovy
 def http = new HttpClient(
     baseUrl: 'http://water-melon.com')
     
-http.post(
-    path: '/cut')
+http.get(
+    path: '/slice')
 ```
 
 <a id='request-headers'></a>
@@ -138,10 +146,10 @@ http.delete(
 ```
 `Map`:
 ```groovy
-http.get(
-    path: '/get',
-    body: [
-        key: 'value']) 
+http.put(
+    path: '/put',
+        body: [
+          key: 'value']) 
 ```
 
 <a id='responses'></a>
@@ -174,7 +182,7 @@ assert response.headers == [
 <a id='response-body'></a>
 ### Response body
 
-By default, response body is represented as a String:
+By default, the response body is a String:
 ```groovy
 Response<String> response = http.get(
     path: '/get')
@@ -183,9 +191,9 @@ assert response.body == 'A string'
 ```
 
 <a id='jsons'></a>
-### Deserializing JSONs to Java object
+### Deserializing JSON responses to Java objects
 
-Response body can be deserialized to a Java object (assuming it's a JSON).
+A valid JSON response body can be deserialized into a Java object.
 ```groovy
 Response<Map> response = http.get(
     path: '/get',
@@ -194,8 +202,16 @@ Response<Map> response = http.get(
 assert response.body == [key: 'value']
 ```
 
+```groovy
+Response<BananaIceCream> response = http.get(
+    path: '/ice-cream?banana=true',
+    expecting: BananaIceCream)
+    
+assert response.body instanceof BananaIceCream
+```
+
 <a id='generics'></a>
-### Deserializing JSONs to Java generics
+### Deserializing JSON responses to Java generics
 
 ```groovy
 Response<List<Map>> response = http.get(
@@ -209,4 +225,24 @@ assert response.body == [
 
 See more use-cases in [integration tests](src/integration-test/groovy)
 
-_**Disclaimer:**_ Our primary use-case of this http client is testing our REST services. The client has not been tested for any production use. The client has no verification of https certificates et al.
+<a id='todo'></a>
+## Future work
+
+- Verify HTTPS certificates
+- Document URL encoding behavior
+- Allow specifying `Authorization` header in constructor
+
+<a id='bugs'></a>
+## Known bugs
+
+None yet!
+
+<a id='contact'></a>
+## Contact
+
+[artamonov.kirill@gmail.com](mailto:artamonov.kirill@gmail.com)
+
+<a id="disclaimer"></a>
+## Disclaimer
+
+Our primary use-case of this http client is testing our REST services. The client has not been tested for any production use though we don't expect big issues there.
