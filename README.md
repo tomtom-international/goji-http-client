@@ -33,8 +33,12 @@ limitations under the License.
    * [Response status code](#status)
    * [Response headers](#response-headers)
    * [Response body](#response-body)
-   * [Deserializing JSONs to Java object](#jsons)
-   * [Deserializing JSONs to Java generics](#generics)
+   * [Deserializing JSON responses to Java objects](#jsons)
+   * [Deserializing JSON responses to Java generics](#generics)
+* [Future work](#todo)
+* [Known bugs](#bugs)
+* [Contact](#contact)
+* [Disclaimer](#disclaimer)
     
 <a id='intro'></a>
 ## Intro
@@ -187,7 +191,7 @@ assert response.body == 'A string'
 ```
 
 <a id='jsons'></a>
-### Deserializing JSON responses to Java object
+### Deserializing JSON responses to Java objects
 
 A valid JSON response body can be deserialized into a Java object.
 ```groovy
@@ -222,23 +226,23 @@ assert response.body == [
 See more use-cases in [integration tests](src/integration-test/groovy)
 
 <a id='todo'></a>
-### Future work
+## Future work
 
 - Verify HTTPS certificates
 - Document URL encoding behavior
 - Allow specifying `Authorization` header in constructor
 
 <a id='bugs'></a>
-### Known bugs
+## Known bugs
 
 None yet!
 
 <a id='contact'></a>
-### Contact
+## Contact
 
-<kirill.artamonov@tomtom.com>
+[artamonov.kirill@gmail.com](mailto:artamonov.kirill@gmail.com)
 
 <a id="disclaimer"></a>
-### Disclaimer
+## Disclaimer
 
 Our primary use-case of this http client is testing our REST services. The client has not been tested for any production use though we don't expect big issues there.
