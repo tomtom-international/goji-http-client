@@ -37,8 +37,7 @@ class HttpClientSpec extends Specification {
         def mapper = new ObjectMapper()
 
         when:
-        def http = new HttpClient(
-                mapper: mapper)
+        def http = new HttpClient(mapper: mapper)
 
         then:
         http.builder.mapper == mapper
@@ -62,13 +61,12 @@ class HttpClientSpec extends Specification {
                 parser: parser)
 
         when:
-        def actual = http.get(
-                url: 'url')
+        def actual = http.get(url: 'foo')
 
         then:
         actual == response
         1 * builder.request([
-                url   : 'url',
+                url   : 'foo',
                 method: 'get']
         ) >> request
         1 * client.execute(request) >> httpResponse
@@ -88,12 +86,11 @@ class HttpClientSpec extends Specification {
                 parser: parser)
 
         when:
-        http.post(
-                url: 'url')
+        http.post(url: 'foo')
 
         then:
         1 * builder.request([
-                url   : 'url',
+                url   : 'foo',
                 method: 'post'])
     }
 
@@ -109,12 +106,11 @@ class HttpClientSpec extends Specification {
                 parser: parser)
 
         when:
-        http.head(
-                url: 'url')
+        http.head(url: 'foo')
 
         then:
         1 * builder.request([
-                url   : 'url',
+                url   : 'foo',
                 method: 'head'])
     }
 
@@ -130,12 +126,11 @@ class HttpClientSpec extends Specification {
                 parser: parser)
 
         when:
-        http.put(
-                url: 'url')
+        http.put(url: 'foo')
 
         then:
         1 * builder.request([
-                url   : 'url',
+                url   : 'foo',
                 method: 'put'])
     }
 
@@ -151,13 +146,72 @@ class HttpClientSpec extends Specification {
                 parser: parser)
 
         when:
-        http.delete(
-                url: 'url')
+        http.delete(url: 'foo')
 
         then:
         1 * builder.request([
-                url   : 'url',
+                url   : 'foo',
                 method: 'delete'])
+    }
+
+    def 'Executes an options request'() {
+        given:
+        def builder = Mock RequestBuilder
+        def client = Mock org.apache.http.client.HttpClient
+        def parser = Mock ResponseParser
+        and:
+        def http = new HttpClient(
+                builder: builder,
+                client: client,
+                parser: parser)
+
+        when:
+        http.options(url: 'foo')
+
+        then:
+        1 * builder.request([
+                url   : 'foo',
+                method: 'options'])
+    }
+
+    def 'Executes a trace request'() {
+        given:
+        def builder = Mock RequestBuilder
+        def client = Mock org.apache.http.client.HttpClient
+        def parser = Mock ResponseParser
+        and:
+        def http = new HttpClient(
+                builder: builder,
+                client: client,
+                parser: parser)
+
+        when:
+        http.trace(url: 'foo')
+
+        then:
+        1 * builder.request([
+                url   : 'foo',
+                method: 'trace'])
+    }
+
+    def 'Executes a patch request'() {
+        given:
+        def builder = Mock RequestBuilder
+        def client = Mock org.apache.http.client.HttpClient
+        def parser = Mock ResponseParser
+        and:
+        def http = new HttpClient(
+                builder: builder,
+                client: client,
+                parser: parser)
+
+        when:
+        http.patch(url: 'foo')
+
+        then:
+        1 * builder.request([
+                url   : 'foo',
+                method: 'patch'])
     }
 
     def 'Passes expected value'() {
@@ -173,7 +227,7 @@ class HttpClientSpec extends Specification {
 
         when:
         http.get(
-                url: 'url',
+                url: 'foo',
                 expecting: Map)
 
         then:
@@ -193,7 +247,7 @@ class HttpClientSpec extends Specification {
 
         when:
         http.get(
-                url: 'url',
+                url: 'foo',
                 expecting: List, of: Map)
 
         then:
@@ -203,10 +257,10 @@ class HttpClientSpec extends Specification {
     def 'Allows to set base url'() {
         when:
         def http = new HttpClient(
-                baseUrl: 'base')
+                baseUrl: 'foo')
 
         then:
-        http.builder.baseUrl == 'base'
+        http.builder.baseUrl == 'foo'
     }
 
 }

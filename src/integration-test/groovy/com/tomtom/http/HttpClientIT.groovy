@@ -131,6 +131,51 @@ class HttpClientIT extends Specification {
         response.statusCode == OK
     }
 
+    def 'Executes an options'() {
+        given:
+        service.givenThat(
+                options(urlEqualTo('/path'))
+                        .willReturn(
+                        aResponse().withStatus(OK)))
+
+        when:
+        def response = http.options(
+                url: "http://localhost:${service.port()}/path")
+
+        then:
+        response.statusCode == OK
+    }
+
+    def 'Executes a trace'() {
+        given:
+        service.givenThat(
+                trace(urlEqualTo('/path'))
+                        .willReturn(
+                        aResponse().withStatus(OK)))
+
+        when:
+        def response = http.trace(
+                url: "http://localhost:${service.port()}/path")
+
+        then:
+        response.statusCode == OK
+    }
+
+    def 'Executes a patch'() {
+        given:
+        service.givenThat(
+                patch(urlEqualTo('/path'))
+                        .willReturn(
+                        aResponse().withStatus(OK)))
+
+        when:
+        def response = http.patch(
+                url: "http://localhost:${service.port()}/path")
+
+        then:
+        response.statusCode == OK
+    }
+
     def 'Parses response'() {
         given:
         service.givenThat(

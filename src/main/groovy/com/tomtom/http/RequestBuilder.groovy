@@ -88,9 +88,14 @@ class RequestBuilder {
                 return new HttpPut(url)
             case 'delete':
                 return new HttpDelete(url)
+            case 'options':
+                return new HttpOptions(url)
+            case 'patch':
+                return new HttpPatch(url)
+            case 'trace':
+                return new HttpTrace(url)
             default:
-                throw new UnsupportedOperationException(
-                        "$method not supported")
+                throw new UnsupportedOperationException("$method not supported")
         }
     }
 

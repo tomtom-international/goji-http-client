@@ -28,16 +28,15 @@ class RequestBuilderSpec extends Specification {
         given:
         def properties = [
                 method: 'get',
-                url   : 'url']
+                url   : 'foo']
 
         when:
-        def request = builder
-                .request properties
+        def request = builder.request properties
 
         then:
         with(request) {
             method == 'GET'
-            getURI() == 'url'.toURI()
+            getURI() == 'foo'.toURI()
         }
     }
 
@@ -45,27 +44,25 @@ class RequestBuilderSpec extends Specification {
         given:
         def properties = [
                 method: 'post',
-                url   : 'url',
-                body  : 'body']
+                url   : 'foo',
+                body  : 'bar']
 
         when:
-        def request = builder
-                .request properties
+        def request = builder.request properties
 
         then:
         request.method == 'POST'
-        (request as HttpPost).entity.content.text == 'body'
+        (request as HttpPost).entity.content.text == 'bar'
     }
 
     def 'Builds head'() {
         given:
         def properties = [
                 method: 'head',
-                url   : 'url']
+                url   : 'foo']
 
         when:
-        def request = builder
-                .request properties
+        def request = builder.request properties
 
         then:
         request.method == 'HEAD'
@@ -75,29 +72,26 @@ class RequestBuilderSpec extends Specification {
         given:
         def properties = [
                 method: 'put',
-                url   : 'url',
+                url   : 'foo',
                 body  : [a: 'b']]
 
         when:
-        def request = builder
-                .request properties
+        def request = builder.request properties
 
         then:
         request.method == 'PUT'
         (request as HttpPut).entity.content.text == '{"a":"b"}'
     }
 
-    @SuppressWarnings('GrEqualsBetweenInconvertibleTypes')
     def 'Builds delete with headers'() {
         given:
         def properties = [
                 method : 'delete',
-                url    : 'url',
+                url    : 'foo',
                 headers: [a: 'b', c: 'd']]
 
         when:
-        def request = builder
-                .request properties
+        def request = builder.request properties
 
         then:
         with(request) {
@@ -107,33 +101,76 @@ class RequestBuilderSpec extends Specification {
         }
     }
 
+    def 'Builds options'() {
+        given:
+        def properties = [
+                method : 'options',
+                url    : 'foo']
+
+        when:
+        def request = builder.request properties
+
+        then:
+        with(request) {
+            method == 'OPTIONS'
+        }
+    }
+
+    def 'Builds patch'() {
+        given:
+        def properties = [
+                method : 'patch',
+                url    : 'foo']
+
+        when:
+        def request = builder.request properties
+
+        then:
+        with(request) {
+            method == 'PATCH'
+        }
+    }
+
+    def 'Builds trace'() {
+        given:
+        def properties = [
+                method : 'trace',
+                url    : 'foo']
+
+        when:
+        def request = builder.request properties
+
+        then:
+        with(request) {
+            method == 'TRACE'
+        }
+    }
+
     def 'Specifies url by base url and path'() {
         given:
-        def builder = new RequestBuilder(
-                baseUrl: 'base')
+        def builder = new RequestBuilder(baseUrl: 'foo')
 
         when:
         def request = builder.request(
                 method: 'get',
-                path: '/path')
+                path: '/bar')
 
         then:
-        request.getURI() == 'base/path'.toURI()
+        request.getURI() == 'foo/bar'.toURI()
     }
 
     def 'Url property is preferred over path'() {
         given:
-        def builder = new RequestBuilder(
-                baseUrl: 'base')
+        def builder = new RequestBuilder(baseUrl: 'foo')
 
         when:
         def request = builder.request(
                 method: 'get',
-                url: 'url',
-                path: '/path')
+                url: 'bar',
+                path: '/coverage')
 
         then:
-        request.getURI() == 'url'.toURI()
+        request.getURI() == 'bar'.toURI()
     }
 
     def 'Either url or base url and path is required'() {
