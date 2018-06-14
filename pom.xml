@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <name>GOJI HTTP Client</name>
     <description>
         A wrapper around Apache HttpClient and Jackson Databind libraries with lean Groovy syntax.
@@ -49,25 +49,25 @@
     </scm>
 
     <properties>
-        <groovy.version>2.4.13</groovy.version>
-        <httpclient.version>4.5.4</httpclient.version>
-        <jackson-databind.version>2.9.3</jackson-databind.version>
+        <groovy.version>2.4.15</groovy.version>
+        <httpclient.version>4.5.5</httpclient.version>
+        <jackson-databind.version>2.9.6</jackson-databind.version>
 
-        <gmavenplus-plugin.version>1.5</gmavenplus-plugin.version>
-        <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
+        <gmavenplus-plugin.version>1.6.1</gmavenplus-plugin.version>
+        <maven-failsafe-plugin.version>2.21.0</maven-failsafe-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <groovydoc-maven-plugin.version>2.1</groovydoc-maven-plugin.version>
         <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <maven-site-plugin.version>3.6</maven-site-plugin.version>
-        <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
+        <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+        <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 
-        <cglib-nodep.version>3.2.5</cglib-nodep.version>
-        <log4j.version>2.10.0</log4j.version>
+        <cglib-nodep.version>3.2.6</cglib-nodep.version>
+        <log4j.version>2.11.0</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <spock-core.version>1.1-groovy-2.4</spock-core.version>
-        <wiremock.version>2.12.0</wiremock.version>
+        <spock.version>1.1-groovy-2.4</spock.version>
+        <wiremock.version>2.18.0</wiremock.version>
     </properties>
 
     <dependencies>
@@ -149,7 +149,7 @@
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
-            <version>${spock-core.version}</version>
+            <version>${spock.version}</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -267,8 +267,9 @@
                             <goal>addTestSources</goal>
                             <goal>generateStubs</goal>
                             <goal>compile</goal>
-                            <goal>testCompile</goal>
+                            <goal>compileTests</goal>
                             <goal>removeStubs</goal>
+                            <goal>removeTestStubs</goal>
                         </goals>
                     </execution>
                 </executions>
