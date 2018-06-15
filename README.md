@@ -71,6 +71,8 @@ The library is initially intended for writing easily readable unit-tests but can
   * initial release
 * [1.1.0](http://mvnrepository.com/artifact/com.tomtom.http/goji-http-client/1.1.0>)
   * (doc) maven usage and javadocs
+* [1.2.0](http://mvnrepository.com/artifact/com.tomtom.http/goji-http-client/1.2.0>)
+  * (feature) support for TRACE, OPTIONS and PATCH methods
 
 <a id='usage'></a>
 ## Usage
