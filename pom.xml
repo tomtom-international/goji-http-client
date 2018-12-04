@@ -49,25 +49,25 @@
     </scm>
 
     <properties>
-        <groovy.version>2.4.15</groovy.version>
-        <httpclient.version>4.5.5</httpclient.version>
-        <jackson-databind.version>2.9.5</jackson-databind.version>
+        <groovy.version>2.5.4</groovy.version>
+        <httpclient.version>4.5.6</httpclient.version>
+        <jackson-databind.version>2.9.7</jackson-databind.version>
 
-        <gmavenplus-plugin.version>1.6.1</gmavenplus-plugin.version>
-        <maven-failsafe-plugin.version>2.21.0</maven-failsafe-plugin.version>
+        <gmavenplus-plugin.version>1.6.2</gmavenplus-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M1</maven-failsafe-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <groovydoc-maven-plugin.version>2.1</groovydoc-maven-plugin.version>
-        <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
+        <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
-        <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M1</maven-surefire-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 
-        <cglib-nodep.version>3.2.6</cglib-nodep.version>
-        <log4j.version>2.11.0</log4j.version>
+        <cglib-nodep.version>3.2.9</cglib-nodep.version>
+        <log4j.version>2.11.1</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <spock.version>1.1-groovy-2.4</spock.version>
-        <wiremock.version>2.18.0</wiremock.version>
+        <spock.version>1.2-groovy-2.5</spock.version>
+        <wiremock.version>2.19.0</wiremock.version>
     </properties>
 
     <dependencies>
@@ -115,7 +115,7 @@
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
+            <artifactId>groovy</artifactId>
             <version>${groovy.version}</version>
         </dependency>
 
@@ -245,9 +245,8 @@
                 <dependencies>
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-all</artifactId>
+                        <artifactId>groovy-xml</artifactId>
                         <version>${groovy.version}</version>
-                        <scope>runtime</scope>
                     </dependency>
                 </dependencies>
                 <configuration>
