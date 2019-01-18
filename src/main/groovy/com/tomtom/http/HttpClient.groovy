@@ -54,8 +54,7 @@ class HttpClient {
      * @param client a custom {@link org.apache.http.client.HttpClient}
      * @param mapper a custom {@link ObjectMapper}
      */
-    HttpClient(
-            Map properties) {
+    HttpClient(Map properties) {
         client = properties['client'] as ApacheHttpClient ?: defaultClient()
 
         def mapper = properties['mapper'] as ObjectMapper ?: new ObjectMapper()
@@ -88,8 +87,7 @@ class HttpClient {
      * &emsp;<b>expecting</b> - a class to deserialize response body to. If not specified, response body is a {@link String}<br/>
      * &emsp;<b>of</b> - a subclass to deserialize response body to. Use to deserialize generic responses like {@link Collection}<{@link Map}>.
      */
-    Response head(
-            Map properties) {
+    Response head(Map properties) {
         def all = properties + [method: 'head']
         performRequest all
     }
@@ -192,8 +190,7 @@ class HttpClient {
         performRequest all
     }
 
-    private Response performRequest(
-            Map properties) {
+    private Response performRequest(Map properties) {
         def request = builder.request properties
         def response = client.execute request
         parser.parse(

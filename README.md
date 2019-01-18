@@ -45,22 +45,18 @@ limitations under the License.
 This client wraps around [Apache HttpClient](https://hc.apache.org/httpcomponents-client-ga/) and [Jackson Databind](https://github.com/FasterXML/jackson-databind) libraries providing lean Groovy syntax:
 ```groovy
 given:
-def http = new HttpClient(
-    baseUrl: 'http://ice-cream-service.be')
+def http = new HttpClient(baseUrl: 'http://ice-cream-service.be')
     
 when:
 def response = http.post(
     path: '/ice-cream?banana=true',
-    headers: [
-        'Content-Type': 'application/json'],
-    body: [
-        sprinkles: true],
+    headers: ['Content-Type': 'application/json'],
+    body: [sprinkles: true],
     expecting: BananaIceCream)
     
 then:
 response.statusCode == ResponseCode.OK
-response.body == new BananaIceCream(
-    sprinkles: true)
+response.body == new BananaIceCream(sprinkles: true)
 ```
 
 The library is initially intended for writing easily readable unit-tests but can also but used in other Groovy scripts. 
@@ -73,6 +69,8 @@ The library is initially intended for writing easily readable unit-tests but can
   * (doc) maven usage and javadocs
 * [1.2.0](http://mvnrepository.com/artifact/com.tomtom.http/goji-http-client/1.2.0)
   * (feature) support for TRACE, OPTIONS and PATCH methods
+ * [1.2.3](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.2.3/jar)
+   * (chore) updated dependencies, including jackson-databind version with vulnerabilities
 
 <a id='usage'></a>
 ## Usage
@@ -86,7 +84,7 @@ GOJI HTTP uses the [semantic versioning](http://semver.org/) strategy: MAJOR.MIN
 <dependency>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.3</version>
 </dependency>
 ```
 
@@ -102,6 +100,9 @@ http.get()
 http.post()
 http.put()
 http.delete()
+http.trace()
+http.patch()
+http.options()
 ```
 
 <a id='url'></a>
@@ -117,11 +118,9 @@ http.get(
 
 If you want to make a number of requests to a given service, you can specify the `baseUrl` constructor parameter:
 ```groovy
-def http = new HttpClient(
-    baseUrl: 'http://water-melon.com')
+def http = new HttpClient(baseUrl: 'http://water-melon.com')
     
-http.get(
-    path: '/slice')
+http.get(path: '/slice')
 ```
 
 <a id='request-headers'></a>
@@ -150,8 +149,7 @@ http.delete(
 ```groovy
 http.put(
     path: '/put',
-        body: [
-          key: 'value']) 
+    body: [key: 'value']) 
 ```
 
 <a id='responses'></a>
@@ -161,8 +159,7 @@ http.put(
 ### Response status code
 
 ```groovy
-def response = http.get(
-    path: '/get')
+def response = http.get(path: '/get')
     
 assert response.statusCode == ResponseCode.OK
 ```
@@ -171,8 +168,7 @@ assert response.statusCode == ResponseCode.OK
 ### Response headers
 
 ```groovy
-def response = http.get(
-    path: '/get')
+def response = http.get(path: '/get')
     
 assert response.headers == [
     'Content-Type': [
@@ -186,8 +182,7 @@ assert response.headers == [
 
 By default, the response body is a String:
 ```groovy
-Response<String> response = http.get(
-    path: '/get')
+Response<String> response = http.get(path: '/get')
     
 assert response.body == 'A string'
 ```
