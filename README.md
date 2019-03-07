@@ -29,6 +29,7 @@ limitations under the License.
    * [Base url](#base-url)
    * [Request headers](#request-headers)
    * [Request body](#request-body)
+      * [File upload](#file-upload)
 * [Handling responses](#responses)
    * [Response status code](#status)
    * [Response headers](#response-headers)
@@ -69,8 +70,10 @@ The library is initially intended for writing easily readable unit-tests but can
   * (doc) maven usage and javadocs
 * [1.2.0](http://mvnrepository.com/artifact/com.tomtom.http/goji-http-client/1.2.0)
   * (feature) support for TRACE, OPTIONS and PATCH methods
- * [1.2.3](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.2.3/jar)
-   * (chore) updated dependencies, including jackson-databind version with vulnerabilities
+* [1.2.3](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.2.3/jar)
+  * (chore) updated dependencies, including jackson-databind version with vulnerabilities
+* [1.3.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.3.0/jar)
+  * (feat) file upload
 
 <a id='usage'></a>
 ## Usage
@@ -109,8 +112,7 @@ http.options()
 ### A request to an arbitrary url:
 
 ```groovy
-http.get(
-    url: 'http://pizza-delivery.org/margheritas')
+http.get(url: 'http://pizza-delivery.org/margheritas')
 ```
 
 <a id='base-url'></a>
@@ -151,6 +153,16 @@ http.put(
     path: '/put',
     body: [key: 'value']) 
 ```
+
+<a id='file-upload'></a>
+#### Uploading a file
+
+If an instance of `java.io.File` is provided as `body` argument, it will be wrapped into a `MultipartFile`:
+```groovy
+http.put(
+    path: '/post',
+    body: '/tmp/input.json' as File) 
+``` 
 
 <a id='responses'></a>
 ## Handling responses

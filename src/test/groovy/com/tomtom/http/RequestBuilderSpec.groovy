@@ -18,13 +18,17 @@ package com.tomtom.http
 
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.client.methods.HttpPut
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class RequestBuilderSpec extends Specification {
 
     def builder = new RequestBuilder()
+    @Rule
+    TemporaryFolder tmp
 
-    def 'Builds get'() {
+    def 'builds get'() {
         given:
         def properties = [
                 method: 'get',
@@ -40,7 +44,7 @@ class RequestBuilderSpec extends Specification {
         }
     }
 
-    def 'Builds post with a body'() {
+    def 'builds post with a body'() {
         given:
         def properties = [
                 method: 'post',
@@ -55,7 +59,23 @@ class RequestBuilderSpec extends Specification {
         (request as HttpPost).entity.content.text == 'bar'
     }
 
-    def 'Builds head'() {
+    def 'builds post with a file'() {
+        given:
+        def file = tmp.newFile() << 'bar'
+        def properties = [
+                method: 'post',
+                url   : 'foo',
+                body  : file]
+
+        when:
+        def request = builder.request properties
+
+        then:
+        request.method == 'POST'
+        (request as HttpPost).entity.multipart.bodyParts.body*.inputStream.text == ['bar']
+    }
+
+    def 'builds head'() {
         given:
         def properties = [
                 method: 'head',
@@ -68,7 +88,7 @@ class RequestBuilderSpec extends Specification {
         request.method == 'HEAD'
     }
 
-    def 'Builds put with a json body'() {
+    def 'builds put with a json body'() {
         given:
         def properties = [
                 method: 'put',
@@ -83,7 +103,7 @@ class RequestBuilderSpec extends Specification {
         (request as HttpPut).entity.content.text == '{"a":"b"}'
     }
 
-    def 'Builds delete with headers'() {
+    def 'builds delete with headers'() {
         given:
         def properties = [
                 method : 'delete',
@@ -101,7 +121,7 @@ class RequestBuilderSpec extends Specification {
         }
     }
 
-    def 'Builds options'() {
+    def 'builds options'() {
         given:
         def properties = [
                 method : 'options',
@@ -116,7 +136,7 @@ class RequestBuilderSpec extends Specification {
         }
     }
 
-    def 'Builds patch'() {
+    def 'builds patch'() {
         given:
         def properties = [
                 method : 'patch',
@@ -131,7 +151,7 @@ class RequestBuilderSpec extends Specification {
         }
     }
 
-    def 'Builds trace'() {
+    def 'builds trace'() {
         given:
         def properties = [
                 method : 'trace',
@@ -146,7 +166,7 @@ class RequestBuilderSpec extends Specification {
         }
     }
 
-    def 'Specifies url by base url and path'() {
+    def 'specifies url by base url and path'() {
         given:
         def builder = new RequestBuilder(baseUrl: 'foo')
 
@@ -159,7 +179,7 @@ class RequestBuilderSpec extends Specification {
         request.getURI() == 'foo/bar'.toURI()
     }
 
-    def 'Url property is preferred over path'() {
+    def 'URL property is preferred over path'() {
         given:
         def builder = new RequestBuilder(baseUrl: 'foo')
 
@@ -173,7 +193,7 @@ class RequestBuilderSpec extends Specification {
         request.getURI() == 'bar'.toURI()
     }
 
-    def 'Either url or base url and path is required'() {
+    def 'either url or base url and path is required'() {
         when:
         builder.request([:])
 

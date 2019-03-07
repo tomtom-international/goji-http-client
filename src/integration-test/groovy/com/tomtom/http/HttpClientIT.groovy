@@ -17,34 +17,32 @@
 package com.tomtom.http
 
 import com.github.tomakehurst.wiremock.WireMockServer
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import static com.tomtom.http.response.ResponseCode.OK
 
 class HttpClientIT extends Specification {
 
-    static service = new WireMockServer()
-
+    def service = new WireMockServer(wireMockConfig().dynamicPort())
     def http = new HttpClient()
+    @Rule
+    TemporaryFolder tmp
 
-    def setupSpec() {
+    def setup() {
         service.start()
     }
 
-    def setup() {
-        service.resetAll()
-    }
-
-    def 'Executes a get'() {
+    def 'executes a get'() {
         given:
         service.givenThat(
                 get(urlEqualTo('/path'))
-                        .willReturn(
-                        aResponse()
-                                .withStatus(OK)
-                                .withHeader('header', 'value')
-                                .withBody('body')))
+                        .willReturn(ok()
+                        .withHeader('header', 'value')
+                        .withBody('body')))
 
         when:
         def response = http.get(
@@ -58,33 +56,27 @@ class HttpClientIT extends Specification {
         }
     }
 
-    def 'Executes a get with path and base url'() {
+    def 'executes a get with path and base url'() {
         given:
         service.givenThat(
                 get(urlEqualTo('/path'))
-                        .willReturn(
-                        aResponse()
-                                .withStatus(OK)))
+                        .willReturn(ok()))
         and:
-        def http = new HttpClient(
-                baseUrl: "http://localhost:${service.port()}")
+        def http = new HttpClient(baseUrl: "http://localhost:${service.port()}")
 
         when:
-        def response = http.get(
-                path: '/path')
+        def response = http.get(path: '/path')
 
         then:
         response.statusCode == OK
     }
 
-    def 'Executes a post with a body'() {
+    def 'executes a post with a body'() {
         given:
         service.givenThat(
                 post(urlEqualTo('/path'))
                         .withRequestBody(equalTo('body'))
-                        .willReturn(
-                        aResponse()
-                                .withStatus(OK)))
+                        .willReturn(ok()))
 
         when:
         def response = http.post(
@@ -95,14 +87,30 @@ class HttpClientIT extends Specification {
         response.statusCode == OK
     }
 
-    def 'Executes a put with a json body'() {
+    def 'executes a post with a file body'() {
+        given:
+        def file = tmp.newFile() << 'foo'
+        service.givenThat(
+                post(urlEqualTo('/path'))
+                        .withMultipartRequestBody(
+                        aMultipart().withBody(equalTo('foo')))
+                        .willReturn(ok()))
+
+        when:
+        def response = http.post(
+                url: "http://localhost:${service.port()}/path",
+                body: file)
+
+        then:
+        response.statusCode == OK
+    }
+
+    def 'executes a put with a json body'() {
         given:
         service.givenThat(
                 put(urlEqualTo('/path'))
                         .withRequestBody(equalTo('{"a":"b"}'))
-                        .willReturn(
-                        aResponse()
-                                .withStatus(OK)))
+                        .willReturn(ok()))
 
         when:
         def response = http.put(
@@ -113,14 +121,12 @@ class HttpClientIT extends Specification {
         response.statusCode == OK
     }
 
-    def 'Executes a delete with headers'() {
+    def 'executes a delete with headers'() {
         given:
         service.givenThat(
                 delete(urlEqualTo('/path'))
                         .withHeader('header', equalTo('value'))
-                        .willReturn(
-                        aResponse()
-                                .withStatus(OK)))
+                        .willReturn(ok()))
 
         when:
         def response = http.delete(
@@ -131,58 +137,50 @@ class HttpClientIT extends Specification {
         response.statusCode == OK
     }
 
-    def 'Executes an options'() {
+    def 'executes options'() {
         given:
         service.givenThat(
                 options(urlEqualTo('/path'))
-                        .willReturn(
-                        aResponse().withStatus(OK)))
+                        .willReturn(ok()))
 
         when:
-        def response = http.options(
-                url: "http://localhost:${service.port()}/path")
+        def response = http.options(url: "http://localhost:${service.port()}/path")
 
         then:
         response.statusCode == OK
     }
 
-    def 'Executes a trace'() {
+    def 'executes a trace'() {
         given:
         service.givenThat(
                 trace(urlEqualTo('/path'))
-                        .willReturn(
-                        aResponse().withStatus(OK)))
+                        .willReturn(ok()))
 
         when:
-        def response = http.trace(
-                url: "http://localhost:${service.port()}/path")
+        def response = http.trace(url: "http://localhost:${service.port()}/path")
 
         then:
         response.statusCode == OK
     }
 
-    def 'Executes a patch'() {
+    def 'executes a patch'() {
         given:
         service.givenThat(
                 patch(urlEqualTo('/path'))
-                        .willReturn(
-                        aResponse().withStatus(OK)))
+                        .willReturn(ok()))
 
         when:
-        def response = http.patch(
-                url: "http://localhost:${service.port()}/path")
+        def response = http.patch(url: "http://localhost:${service.port()}/path")
 
         then:
         response.statusCode == OK
     }
 
-    def 'Parses response'() {
+    def 'parses responses'() {
         given:
         service.givenThat(
                 get(urlEqualTo('/path'))
-                        .willReturn(
-                        aResponse()
-                                .withStatus(OK)
+                        .willReturn(ok()
                                 .withBody('{"a": "b"}')))
 
         when:
@@ -197,13 +195,11 @@ class HttpClientIT extends Specification {
         }
     }
 
-    def 'Parses complex response'() {
+    def 'parses generic responses'() {
         given:
         service.givenThat(
                 get(urlEqualTo('/path'))
-                        .willReturn(
-                        aResponse()
-                                .withStatus(OK)
+                        .willReturn(ok()
                                 .withBody('[{"name": "John Doe"}]')))
 
         when:
@@ -214,21 +210,18 @@ class HttpClientIT extends Specification {
         then:
         with(response) {
             statusCode == OK
-            body == [
-                    new Person(
-                            name: 'John Doe')]
+            body == [new Person(name: 'John Doe')]
         }
     }
 
-    def cleanupSpec() {
+    def cleanup() {
         service?.stop()
     }
 
 
-    def 'Executes an https get'() {
+    def 'executes an https get'() {
         when:
-        def response = http.get(
-                url: 'https://httpbin.org/html')
+        def response = http.get(url: 'https://httpbin.org/html')
 
         then:
         response.statusCode == OK

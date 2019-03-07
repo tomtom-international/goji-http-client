@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>1.2.4</version>
+    <version>1.3.0</version>
     <name>GOJI HTTP Client</name>
     <description>
         A wrapper around Apache HttpClient and Jackson Databind libraries with lean Groovy syntax.
@@ -49,25 +49,25 @@
     </scm>
 
     <properties>
-        <groovy.version>2.5.5</groovy.version>
-        <httpclient.version>4.5.6</httpclient.version>
+        <groovy.version>2.5.6</groovy.version>
+        <httpclient.version>4.5.7</httpclient.version>
         <jackson-databind.version>2.9.8</jackson-databind.version>
 
         <gmavenplus-plugin.version>1.6.2</gmavenplus-plugin.version>
-        <maven-failsafe-plugin.version>3.0.0-M1</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M3</maven-failsafe-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <groovydoc-maven-plugin.version>2.1</groovydoc-maven-plugin.version>
         <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M1</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 
         <cglib-nodep.version>3.2.10</cglib-nodep.version>
-        <log4j.version>2.11.1</log4j.version>
-        <slf4j.version>1.7.25</slf4j.version>
+        <log4j.version>2.11.2</log4j.version>
+        <slf4j.version>1.7.26</slf4j.version>
         <spock.version>1.2-groovy-2.5</spock.version>
-        <wiremock.version>2.20.0</wiremock.version>
+        <wiremock.version>2.21.0</wiremock.version>
     </properties>
 
     <dependencies>
@@ -110,6 +110,11 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
             <version>${httpclient.version}</version>
         </dependency>
 

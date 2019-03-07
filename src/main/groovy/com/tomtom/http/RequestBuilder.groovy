@@ -18,8 +18,10 @@ package com.tomtom.http
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.PackageScope
+import org.apache.http.HttpEntity
 import org.apache.http.client.methods.*
 import org.apache.http.entity.StringEntity
+import org.apache.http.entity.mime.MultipartEntityBuilder
 import org.apache.http.message.BasicHeader
 
 @PackageScope
@@ -28,8 +30,7 @@ class RequestBuilder {
     private ObjectMapper mapper = new ObjectMapper()
     private String baseUrl
 
-    HttpRequestBase request(
-            Map properties) {
+    HttpRequestBase request(Map properties) {
         def method = properties['method']
         def url = urlFrom properties
         def request = requestFor method, url
@@ -38,16 +39,18 @@ class RequestBuilder {
         if (headers) addHeaders request, headers
 
         def body = properties['body']
-        if (body) {
-            def serialized = serialize body
-            addBody request, serialized
-        }
+        if (body)
+            if (body instanceof File)
+                addFile request, body
+            else {
+                def serialized = serialize body
+                addBody request, serialized
+            }
 
         request
     }
 
-    private urlFrom(
-            Map properties) {
+    private urlFrom(Map properties) {
         def url = properties['url'] as String
         if (url) return url
         def path = properties['path']
@@ -55,28 +58,32 @@ class RequestBuilder {
         throw new NoUrl()
     }
 
-    private static def addHeaders(
-            request,
-            Map headers) {
-        headers
-                .collect { new BasicHeader(it.key as String, it.value as String) }
+    private static addHeaders(request, Map headers) {
+        headers.collect { new BasicHeader(it.key as String, it.value as String) }
                 .forEach { request.addHeader it }
     }
 
     private String serialize(body) {
-        (body instanceof String) ?
-                body : mapper.writeValueAsString(body)
+        (body instanceof String) ? body : mapper.writeValueAsString(body)
     }
 
-    private static addBody(
-            request,
-            String body) {
-        (request as HttpEntityEnclosingRequestBase)
-                .setEntity new StringEntity(body)
+    private static addBody(request, String body) {
+        addBody request, new StringEntity(body)
     }
 
-    private static HttpRequestBase requestFor(
-            method, String url) {
+    private static addFile(request, File file) {
+        def body = MultipartEntityBuilder
+                .create()
+                .addBinaryBody("file", file)
+                .build()
+        addBody request, body
+    }
+
+    private static addBody(request, HttpEntity body) {
+        (request as HttpEntityEnclosingRequestBase).setEntity body
+    }
+
+    private static HttpRequestBase requestFor(method, String url) {
         switch (method) {
             case 'head':
                 return new HttpHead(url)
