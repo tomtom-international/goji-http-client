@@ -1,0 +1,23 @@
+variables:
+  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+
+trigger:
+  - master
+
+pool:
+  vmImage: 'ubuntu-16.04'
+
+container: maven:slim
+
+steps:
+  - task: Cache@2
+    inputs:
+      key: maven
+      restoreKeys: maven
+      path: $(MAVEN_CACHE_FOLDER)
+      displayName: Cache
+  - task: Maven@3
+    inputs:
+      goals: verify
+      options: '--define maven.repo.local=$(MAVEN_CACHE_FOLDER)'
+      displayName: Verify
