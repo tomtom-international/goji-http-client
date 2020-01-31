@@ -16,6 +16,7 @@
 
 package com.tomtom.http
 
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tomtom.http.response.Response
 import org.apache.http.client.HttpClient as ApacheHttpClient
@@ -27,26 +28,14 @@ import org.apache.http.ssl.SSLContexts
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
+
 class HttpClient {
 
-    private final context = SSLContexts
-            .custom()
-            .loadTrustMaterial(null, new TrustStrategy() {
-        @Override
-        boolean isTrusted(
-                X509Certificate[] chain,
-                String authType) throws CertificateException {
-            true
-        }
-    }).build()
-    private final ApacheHttpClient client
+    private static ApacheHttpClient client
 
     final RequestBuilder builder
     final ResponseParser parser
-
-    HttpClient() {
-        this([:])
-    }
 
     /**
      * Builds {@link HttpClient} with a number of (optional) parameters.
@@ -54,10 +43,10 @@ class HttpClient {
      * @param client a custom {@link org.apache.http.client.HttpClient}
      * @param mapper a custom {@link ObjectMapper}
      */
-    HttpClient(Map properties) {
+    HttpClient(Map properties = [:]) {
         client = properties['client'] as ApacheHttpClient ?: defaultClient()
 
-        def mapper = properties['mapper'] as ObjectMapper ?: new ObjectMapper()
+        def mapper = properties['mapper'] as ObjectMapper ?: defaultMapper()
         def builderParams = [mapper: mapper]
         def baseUrl = properties['baseUrl'] as String
         if (baseUrl) builderParams += [baseUrl: baseUrl]
@@ -66,7 +55,22 @@ class HttpClient {
         parser = properties['parser'] as ResponseParser ?: new ResponseParser(mapper: mapper)
     }
 
-    private defaultClient() {
+    private static ObjectMapper defaultMapper() {
+        new ObjectMapper().disable(FAIL_ON_UNKNOWN_PROPERTIES)
+    }
+
+    private static ApacheHttpClient defaultClient() {
+        def context = SSLContexts
+                .custom()
+                .loadTrustMaterial(null, new TrustStrategy() {
+                    @Override
+                    boolean isTrusted(
+                            X509Certificate[] chain,
+                            String authType) throws CertificateException {
+                        true
+                    }
+                }).build()
+
         HttpClientBuilder
                 .create()
                 .setSSLContext(context)

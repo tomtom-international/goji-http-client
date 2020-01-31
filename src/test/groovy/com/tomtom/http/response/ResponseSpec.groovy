@@ -20,7 +20,7 @@ import spock.lang.Specification
 
 class ResponseSpec extends Specification {
 
-    def 'Has toString'() {
+    def 'has toString'() {
         expect:
         new Response().toString() == 'null: null'
     }

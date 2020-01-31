@@ -17,250 +17,324 @@
 package com.tomtom.http
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.tomtom.http.response.Response
-import org.apache.http.HttpResponse
-import org.apache.http.client.methods.HttpGet
+import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.client.WireMock
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
+import spock.lang.Unroll
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aMultipart
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
+import static com.github.tomakehurst.wiremock.client.WireMock.get
+import static com.github.tomakehurst.wiremock.client.WireMock.ok
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
+import static com.tomtom.http.response.ResponseCode.OK
 
 class HttpClientSpec extends Specification {
 
-    def 'Builds with no custom mapper'() {
-        expect:
-        with(new HttpClient()) {
-            builder.mapper
-            parser.mapper
+    static mock = new WireMockServer(wireMockConfig().dynamicPort())
+    static HttpClient http
+
+    @Rule
+    TemporaryFolder tmp
+
+    def setupSpec() {
+        mock.start()
+        http = new HttpClient(baseUrl: "http://localhost:${mock.port()}")
+    }
+
+    @Unroll
+    def 'executes a #name with via full URL'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer')).willReturn(ok()))
+
+        when:
+        def response = clientMethod(url: "http://localhost:${mock.port()}/freezer")
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'HEAD'    | WireMock.&head    | http.&head
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'executes a #name with via relative path'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer')).willReturn(ok()))
+
+        when:
+        def response = clientMethod(path: '/freezer')
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'HEAD'    | WireMock.&head    | http.&head
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'sends plain text body via #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .withRequestBody(equalTo('ice-cream'))
+                .willReturn(ok()))
+
+        when:
+        def response = clientMethod(path: '/freezer', body: 'ice-cream')
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name    | mockMethod      | clientMethod
+        'POST'  | WireMock.&post  | http.&post
+        'PUT'   | WireMock.&put   | http.&put
+        'PATCH' | WireMock.&patch | http.&patch
+    }
+
+    @Unroll
+    def 'sends body as file via #name'() {
+        given:
+        def file = tmp.newFile() << 'ice-cream'
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .withMultipartRequestBody(aMultipart().withBody(equalTo('ice-cream')))
+                .willReturn(ok()))
+
+        when:
+        def response = clientMethod(path: '/freezer', body: file)
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name    | mockMethod      | clientMethod
+        'POST'  | WireMock.&post  | http.&post
+        'PUT'   | WireMock.&put   | http.&put
+        'PATCH' | WireMock.&patch | http.&patch
+    }
+
+    @Unroll
+    def 'sends body as JSON via #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .withRequestBody(equalTo('{"type":"ice-cream"}'))
+                .willReturn(ok()))
+
+        when:
+        def response = clientMethod(path: '/freezer', body: [type: 'ice-cream'])
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name    | mockMethod      | clientMethod
+        'POST'  | WireMock.&post  | http.&post
+        'PUT'   | WireMock.&put   | http.&put
+        'PATCH' | WireMock.&patch | http.&patch
+    }
+
+    @Unroll
+    def 'sends headers via #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .withHeader('shelve', equalTo('top'))
+                .willReturn(ok()))
+
+        when:
+        def response = clientMethod(path: '/freezer', headers: [shelve: 'top'])
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'HEAD'    | WireMock.&head    | http.&head
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'extracts response body for #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .willReturn(ok('ice-cream')))
+
+        when:
+        def response = clientMethod(path: '/freezer')
+
+        then:
+        with(response) {
+            statusCode == OK
+            body == 'ice-cream'
+        }
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'parses response body for #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .willReturn(ok('{"contents": ["ice-cream"]}')))
+
+        when:
+        def response = clientMethod(path: '/freezer', expecting: Map)
+
+        then:
+        with(response) {
+            statusCode == OK
+            body == [contents: ['ice-cream']]
+        }
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'parses response body as generic for #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .willReturn(ok('[{"type": "ice-cream"}]')))
+
+        when:
+        def response = clientMethod(path: '/freezer', expecting: List, of: Map)
+
+        then:
+        with(response) {
+            statusCode == OK
+            body == [[type: 'ice-cream']]
+        }
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'ignores unknown JSON properties by default for #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .willReturn(ok('{"flavor": "vanilla", "chocolate_coated": false}')))
+
+        when:
+        def response = clientMethod(path: '/freezer', expecting: IceCream)
+
+        then:
+        with(response) {
+            statusCode == OK
+            body == new IceCream(flavor: 'vanilla')
+        }
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    def 'allows providing custom ObjectMapper and falls back to body as string for #name'() {
+        given:
+        def mapper = new ObjectMapper()
+        def http = new HttpClient(mapper: mapper, baseUrl: "http://localhost:${mock.port()}")
+        mock.givenThat(get(urlEqualTo('/freezer'))
+                .willReturn(ok('{"flavor": "vanilla", "chocolate_coated": false}')))
+
+        when:
+        def response = http.get(path: '/freezer', expecting: IceCream)
+
+        then:
+        with(response) {
+            statusCode == OK
+            body == '{"flavor": "vanilla", "chocolate_coated": false}'
         }
     }
 
-    def 'Builds with custom mapper'() {
+    @Unroll
+    def 'extracts response headers for #name'() {
         given:
-        def mapper = new ObjectMapper()
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .willReturn(ok()
+                        .withHeader('content', 'ice-cream')
+                        .withHeader('content', 'frozen kale')
+                        .withHeader('temperature', '-5')))
 
         when:
-        def http = new HttpClient(mapper: mapper)
+        def response = clientMethod(path: '/freezer')
 
         then:
-        http.builder.mapper == mapper
-        http.parser.mapper == mapper
+        with(response) {
+            statusCode == OK
+            headers.temperature == ['-5']
+            headers.content == ['ice-cream', 'frozen kale']
+        }
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'HEAD'    | WireMock.&head    | http.&head
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
     }
 
-    @SuppressWarnings('GroovyAssignabilityCheck')
-    def 'Executes a get request'() {
-        given:
-        def request = Mock HttpGet
-        def httpResponse = Mock HttpResponse
-        def response = Mock Response
-        and:
-        def builder = Mock RequestBuilder
-        def parser = Mock ResponseParser
-        def client = Mock org.apache.http.client.HttpClient
-        and:
-        def http = new HttpClient(
-                client: client,
-                builder: builder,
-                parser: parser)
-
-        when:
-        def actual = http.get(url: 'foo')
-
-        then:
-        actual == response
-        1 * builder.request([
-                url   : 'foo',
-                method: 'get']
-        ) >> request
-        1 * client.execute(request) >> httpResponse
-        1 * parser.parse(httpResponse, null, null) >> response
-        0 * _
+    def cleanup() {
+        mock.resetAll()
     }
 
-    def 'Executes a post request'() {
-        given:
-        def builder = Mock RequestBuilder
-        def client = Mock org.apache.http.client.HttpClient
-        def parser = Mock ResponseParser
-        and:
-        def http = new HttpClient(
-                builder: builder,
-                client: client,
-                parser: parser)
-
-        when:
-        http.post(url: 'foo')
-
-        then:
-        1 * builder.request([
-                url   : 'foo',
-                method: 'post'])
-    }
-
-    def 'Executes a head request'() {
-        given:
-        def builder = Mock RequestBuilder
-        def client = Mock org.apache.http.client.HttpClient
-        def parser = Mock ResponseParser
-        and:
-        def http = new HttpClient(
-                builder: builder,
-                client: client,
-                parser: parser)
-
-        when:
-        http.head(url: 'foo')
-
-        then:
-        1 * builder.request([
-                url   : 'foo',
-                method: 'head'])
-    }
-
-    def 'Executes a put request'() {
-        given:
-        def builder = Mock RequestBuilder
-        def client = Mock org.apache.http.client.HttpClient
-        def parser = Mock ResponseParser
-        and:
-        def http = new HttpClient(
-                builder: builder,
-                client: client,
-                parser: parser)
-
-        when:
-        http.put(url: 'foo')
-
-        then:
-        1 * builder.request([
-                url   : 'foo',
-                method: 'put'])
-    }
-
-    def 'Executes a delete request'() {
-        given:
-        def builder = Mock RequestBuilder
-        def client = Mock org.apache.http.client.HttpClient
-        def parser = Mock ResponseParser
-        and:
-        def http = new HttpClient(
-                builder: builder,
-                client: client,
-                parser: parser)
-
-        when:
-        http.delete(url: 'foo')
-
-        then:
-        1 * builder.request([
-                url   : 'foo',
-                method: 'delete'])
-    }
-
-    def 'Executes an options request'() {
-        given:
-        def builder = Mock RequestBuilder
-        def client = Mock org.apache.http.client.HttpClient
-        def parser = Mock ResponseParser
-        and:
-        def http = new HttpClient(
-                builder: builder,
-                client: client,
-                parser: parser)
-
-        when:
-        http.options(url: 'foo')
-
-        then:
-        1 * builder.request([
-                url   : 'foo',
-                method: 'options'])
-    }
-
-    def 'Executes a trace request'() {
-        given:
-        def builder = Mock RequestBuilder
-        def client = Mock org.apache.http.client.HttpClient
-        def parser = Mock ResponseParser
-        and:
-        def http = new HttpClient(
-                builder: builder,
-                client: client,
-                parser: parser)
-
-        when:
-        http.trace(url: 'foo')
-
-        then:
-        1 * builder.request([
-                url   : 'foo',
-                method: 'trace'])
-    }
-
-    def 'Executes a patch request'() {
-        given:
-        def builder = Mock RequestBuilder
-        def client = Mock org.apache.http.client.HttpClient
-        def parser = Mock ResponseParser
-        and:
-        def http = new HttpClient(
-                builder: builder,
-                client: client,
-                parser: parser)
-
-        when:
-        http.patch(url: 'foo')
-
-        then:
-        1 * builder.request([
-                url   : 'foo',
-                method: 'patch'])
-    }
-
-    def 'Passes expected value'() {
-        given:
-        def builder = Mock RequestBuilder
-        def client = Mock org.apache.http.client.HttpClient
-        def parser = Mock ResponseParser
-        and:
-        def http = new HttpClient(
-                builder: builder,
-                client: client,
-                parser: parser)
-
-        when:
-        http.get(
-                url: 'foo',
-                expecting: Map)
-
-        then:
-        1 * parser.parse(null, Map, null)
-    }
-
-    def 'Passes of value'() {
-        given:
-        def builder = Mock RequestBuilder
-        def client = Mock org.apache.http.client.HttpClient
-        def parser = Mock ResponseParser
-        and:
-        def http = new HttpClient(
-                builder: builder,
-                client: client,
-                parser: parser)
-
-        when:
-        http.get(
-                url: 'foo',
-                expecting: List, of: Map)
-
-        then:
-        1 * parser.parse(null, List, Map)
-    }
-
-    def 'Allows to set base url'() {
-        when:
-        def http = new HttpClient(
-                baseUrl: 'foo')
-
-        then:
-        http.builder.baseUrl == 'foo'
+    def cleanupSpec() {
+        mock.stop()
     }
 
 }
