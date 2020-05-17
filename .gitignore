@@ -1,6 +1,9 @@
-# Intellij
-.idea
+# IntelliJ
+.idea/
 *.iml
 
 # Maven
-target
+target/
+
+# Jenv
+.java-version
