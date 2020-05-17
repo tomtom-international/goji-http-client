@@ -19,16 +19,11 @@ package com.tomtom.http
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
-import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aMultipart
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
-import static com.github.tomakehurst.wiremock.client.WireMock.get
-import static com.github.tomakehurst.wiremock.client.WireMock.ok
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import static com.tomtom.http.response.ResponseCode.OK
 
@@ -37,12 +32,15 @@ class HttpClientSpec extends Specification {
     static mock = new WireMockServer(wireMockConfig().dynamicPort())
     static HttpClient http
 
-    @Rule
-    TemporaryFolder tmp
+    def tmp = new TemporaryFolder()
 
     def setupSpec() {
         mock.start()
         http = new HttpClient(baseUrl: "http://localhost:${mock.port()}")
+    }
+
+    def setup() {
+        tmp.create()
     }
 
     @Unroll
@@ -187,10 +185,8 @@ class HttpClientSpec extends Specification {
         def response = clientMethod(path: '/freezer')
 
         then:
-        with(response) {
-            statusCode == OK
-            body == 'ice-cream'
-        }
+        response.statusCode == OK
+        response.body == 'ice-cream'
 
         where:
         name      | mockMethod        | clientMethod
@@ -213,10 +209,8 @@ class HttpClientSpec extends Specification {
         def response = clientMethod(path: '/freezer', expecting: Map)
 
         then:
-        with(response) {
-            statusCode == OK
-            body == [contents: ['ice-cream']]
-        }
+        response.statusCode == OK
+        response.body == [contents: ['ice-cream']]
 
         where:
         name      | mockMethod        | clientMethod
@@ -239,10 +233,8 @@ class HttpClientSpec extends Specification {
         def response = clientMethod(path: '/freezer', expecting: List, of: Map)
 
         then:
-        with(response) {
-            statusCode == OK
-            body == [[type: 'ice-cream']]
-        }
+        response.statusCode == OK
+        response.body == [[type: 'ice-cream']]
 
         where:
         name      | mockMethod        | clientMethod
@@ -265,10 +257,8 @@ class HttpClientSpec extends Specification {
         def response = clientMethod(path: '/freezer', expecting: IceCream)
 
         then:
-        with(response) {
-            statusCode == OK
-            body == new IceCream(flavor: 'vanilla')
-        }
+        response.statusCode == OK
+        response.body == new IceCream(flavor: 'vanilla')
 
         where:
         name      | mockMethod        | clientMethod
@@ -311,10 +301,10 @@ class HttpClientSpec extends Specification {
         def response = clientMethod(path: '/freezer')
 
         then:
-        with(response) {
-            statusCode == OK
-            headers.temperature == ['-5']
-            headers.content == ['ice-cream', 'frozen kale']
+        response.statusCode == OK
+        with(response.headers) {
+            temperature == ['-5']
+            content == ['ice-cream', 'frozen kale']
         }
 
         where:
@@ -330,11 +320,12 @@ class HttpClientSpec extends Specification {
     }
 
     def cleanup() {
-        mock.resetAll()
+        mock?.resetAll()
+        tmp?.delete()
     }
 
     def cleanupSpec() {
-        mock.stop()
+        mock?.stop()
     }
 
 }

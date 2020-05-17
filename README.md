@@ -67,6 +67,8 @@ The library is initially intended for writing easily readable unit-tests but can
 
 <a id='changelog'></a>
 ## Changelog
+**[1.3.1](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.4.0/jar)**: (chore) updated dependencies, including Groovy v2 -> v3
+
 **[1.3.1](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.3.1/jar)**: (chore) updated dependencies, including jackson-databind version with vulnerabilities
 
 **[1.3.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.3.0/jar)**: (feat) file upload
