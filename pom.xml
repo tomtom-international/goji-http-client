@@ -48,10 +48,6 @@
         <url>http://github.com/tomtom-international/goji-http-client</url>
     </scm>
 
-    <prerequisites>
-        <maven>3.6.3</maven>
-    </prerequisites>
-
     <properties>
         <groovy.version>3.0.3</groovy.version>
         <httpclient.version>4.5.12</httpclient.version>
@@ -164,8 +160,13 @@
     </dependencies>
 
     <distributionManagement>
+         <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+        </repository>
+
         <snapshotRepository>
-            <id>sonatype</id>
+            <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
