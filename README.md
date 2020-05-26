@@ -67,7 +67,7 @@ The library is initially intended for writing easily readable unit-tests but can
 
 <a id='changelog'></a>
 ## Changelog
-**[1.3.1](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.4.0/jar)**: (chore) updated dependencies, including Groovy v2 -> v3
+**[1.4.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.4.0/jar)**: (chore) updated dependencies, including Groovy v2 -> v3 and Jackson (addressing [CVE-2019-17531](https://github.com/advisories/GHSA-gjmw-vf9h-g25v))
 
 **[1.3.1](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.3.1/jar)**: (chore) updated dependencies, including jackson-databind version with vulnerabilities
 
@@ -75,11 +75,11 @@ The library is initially intended for writing easily readable unit-tests but can
 
 **[1.2.3](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.2.3/jar)**: (chore) updated dependencies, including jackson-databind version with vulnerabilities
 
-**[1.2.0](http://mvnrepository.com/artifact/com.tomtom.http/goji-http-client/1.2.0)**: (feature) support for TRACE, OPTIONS and PATCH methods
+**[1.2.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.2.0/jar)**: (feature) support for TRACE, OPTIONS and PATCH methods
 
-**[1.1.0](http://mvnrepository.com/artifact/com.tomtom.http/goji-http-client/1.1.0)**: (doc) maven usage and javadocs
+**[1.1.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.1.0/jar)**: (doc) maven usage and javadocs
 
-**[1.0.0](http://mvnrepository.com/artifact/com.tomtom.http/goji-http-client/1.0.0)**: initial release
+**[1.0.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.0.0/jar)**: initial release
 
 <a id='usage'></a>
 ## Usage
@@ -93,7 +93,7 @@ GOJI HTTP uses the [semantic versioning](http://semver.org/) strategy: MAJOR.MIN
 <dependency>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>1.2.3</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
