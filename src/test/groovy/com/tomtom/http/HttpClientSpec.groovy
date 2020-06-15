@@ -19,7 +19,6 @@ package com.tomtom.http
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -32,15 +31,9 @@ class HttpClientSpec extends Specification {
     static mock = new WireMockServer(wireMockConfig().dynamicPort())
     static HttpClient http
 
-    def tmp = new TemporaryFolder()
-
     def setupSpec() {
         mock.start()
         http = new HttpClient(baseUrl: "http://localhost:${mock.port()}")
-    }
-
-    def setup() {
-        tmp.create()
     }
 
     @Unroll
@@ -112,9 +105,9 @@ class HttpClientSpec extends Specification {
     @Unroll
     def 'sends body as file via #name'() {
         given:
-        def file = tmp.newFile() << 'ice-cream'
+        def file = new File('src/test/resources/ice-cream.txt')
         mock.givenThat(mockMethod(urlEqualTo('/freezer'))
-                .withMultipartRequestBody(aMultipart().withBody(equalTo('ice-cream')))
+                .withMultipartRequestBody(aMultipart().withBody(equalTo(file.text)))
                 .willReturn(ok()))
 
         when:
@@ -321,7 +314,6 @@ class HttpClientSpec extends Specification {
 
     def cleanup() {
         mock?.resetAll()
-        tmp?.delete()
     }
 
     def cleanupSpec() {
