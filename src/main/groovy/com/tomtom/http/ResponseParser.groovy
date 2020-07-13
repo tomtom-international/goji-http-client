@@ -72,8 +72,7 @@ class ResponseParser {
                 .constructParametricType type, subtype
     }
 
-    private JavaType typeOf(
-            Class type) {
+    private JavaType typeOf(Class type) {
         mapper.typeFactory
                 .constructType(new TypeReference<Object>() {
             @Override

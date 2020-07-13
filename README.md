@@ -63,10 +63,35 @@ response.statusCode == ResponseCode.OK
 response.body == new BananaIceCream(sprinkles: true)
 ```
 
-The library is initially intended for writing easily readable unit-tests but can also but used in other Groovy scripts. 
+The library is initially intended for writing easily readable unit-tests but can also but used in other Groovy scripts.
+
+There's also a Java-friendly API available:
+```java
+class IceCreamTest {
+    HttpClient http = new HttpClient("http://ice-cream-service.be");
+
+    @Test
+    public void returnsAnIceCream() {
+        //when:
+        Response<BananaIceCream> response = http
+            .post()
+            .path("/ice-cream?banana=true")
+            .header("Content-Type", "application/json")
+            .body(Map.of("sprinkles", true))
+            .expecting(BananaIceCream.class);
+     
+        //then:
+        response.getStatusCode() == ResponseCode.OK;
+        response.getBody().equals(new BananaIceCream(true));
+    }
+}
+```
+Full Java API reference is available [here](doc/JAVA.md)
 
 <a id='changelog'></a>
 ## Changelog
+**[2.0.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/2.0.0/jar)**: (feature) Java-friendly API
+
 **[1.4.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.4.0/jar)**: (chore) updated dependencies, including Groovy v2 -> v3 and Jackson (addressing [CVE-2019-17531](https://github.com/advisories/GHSA-gjmw-vf9h-g25v))
 
 **[1.3.1](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.3.1/jar)**: (chore) updated dependencies, including jackson-databind version with vulnerabilities
@@ -93,7 +118,7 @@ GOJI HTTP uses the [semantic versioning](http://semver.org/) strategy: MAJOR.MIN
 <dependency>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>1.4.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -238,7 +263,7 @@ assert response.body == [
     ['another-key': 'another value']]
 ```
 
-See more use-cases in [integration tests](src/integration-test/groovy)
+See more use-cases in [tests](src/test/groovy)
 
 <a id='todo'></a>
 ## Future work

@@ -17,12 +17,15 @@
 package com.tomtom.http
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.tomtom.http.response.Response
 import groovy.transform.PackageScope
 import org.apache.http.HttpEntity
 import org.apache.http.client.methods.*
 import org.apache.http.entity.StringEntity
 import org.apache.http.entity.mime.MultipartEntityBuilder
 import org.apache.http.message.BasicHeader
+
+import java.util.function.Function
 
 @PackageScope
 class RequestBuilder {
@@ -106,12 +109,53 @@ class RequestBuilder {
         }
     }
 
-    def getMapper() {
-        mapper
+    static class UrlBuilder<T> {
+        private Function<Map, Response<T>> method
+
+        ParametersBuilder<T> url(String url) {
+            new ParametersBuilder<>(method: method, parameters: [url: url])
+        }
+
+        ParametersBuilder<T> url(URI url) {
+            this.url(url.toString())
+        }
+
+        ParametersBuilder<T> url(URL url) {
+            this.url(url.toString())
+        }
+
+        ParametersBuilder<T> path(String path) {
+            new ParametersBuilder<>(method: method, parameters: [path: path])
+        }
     }
 
-    def getBaseUrl() {
-        baseUrl
+    static class ParametersBuilder<T> {
+        private Function<Map, Response<T>> method
+        private Map parameters
+
+        ParametersBuilder<T> header(String name, String value) {
+            parameters.headers = (parameters.headers ?: [:]) + [(name): value]
+            this
+        }
+
+        ParametersBuilder<T> body(body) {
+            parameters.body = body
+            this
+        }
+
+        ParametersBuilder<T> expecting(Class<T> type) {
+            parameters.expecting = type
+            this
+        }
+
+        ParametersBuilder<T> of(Class type) {
+            parameters.of = type
+            this
+        }
+
+        Response<T> execute() {
+            method.apply(parameters)
+        }
     }
 
 }

@@ -16,7 +16,6 @@
 
 package com.tomtom.http
 
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tomtom.http.response.Response
 import org.apache.http.client.HttpClient as ApacheHttpClient
@@ -53,6 +52,30 @@ class HttpClient {
 
         builder = properties['builder'] as RequestBuilder ?: new RequestBuilder(builderParams)
         parser = properties['parser'] as ResponseParser ?: new ResponseParser(mapper: mapper)
+    }
+
+    /**
+     * Builds {@link HttpClient} with a base URL.
+     * @param baseUrl a url prefix for request {@code path} parameter
+     */
+    HttpClient(String baseUrl) {
+        this(baseUrl: baseUrl)
+    }
+
+    /**
+     * Builds {@link HttpClient} with a base URL.
+     * @param baseUrl a url prefix for request {@code path} parameter
+     */
+    HttpClient(URI baseUrl) {
+        this(baseUrl.toString())
+    }
+
+    /**
+     * Builds {@link HttpClient} with a base URL.
+     * @param baseUrl a url prefix for request {@code path} parameter
+     */
+    HttpClient(URL baseUrl) {
+        this(baseUrl.toString())
     }
 
     private static ObjectMapper defaultMapper() {
@@ -96,6 +119,10 @@ class HttpClient {
         performRequest all
     }
 
+    def <T> RequestBuilder.UrlBuilder<T> head() {
+        new RequestBuilder.UrlBuilder<>(method: { Map p -> head(p) })
+    }
+
     /**
      * Possible properties:<br/>
      * &emsp;<b>path</b> - a request path (appended to a base url defined at {@link #HttpClient(Map)} constructor)<br/>
@@ -108,6 +135,10 @@ class HttpClient {
     Response get(Map properties) {
         def all = properties + [method: 'get']
         performRequest all
+    }
+
+    def <T> RequestBuilder.UrlBuilder<T> get() {
+        new RequestBuilder.UrlBuilder<>(method: { Map p -> get(p) })
     }
 
     /**
@@ -124,6 +155,10 @@ class HttpClient {
         performRequest all
     }
 
+    def <T> RequestBuilder.UrlBuilder<T> post() {
+        new RequestBuilder.UrlBuilder<>(method: { Map p -> post(p) })
+    }
+
     /**
      * Possible properties:<br/>
      * &emsp;<b>path</b> - a request path (appended to a base url defined at {@link #HttpClient(Map)} constructor)<br/>
@@ -136,6 +171,10 @@ class HttpClient {
     Response put(Map properties) {
         def all = properties + [method: 'put']
         performRequest all
+    }
+
+    def <T> RequestBuilder.UrlBuilder<T> put() {
+        new RequestBuilder.UrlBuilder<>(method: { Map p -> put(p) })
     }
 
     /**
@@ -152,6 +191,10 @@ class HttpClient {
         performRequest all
     }
 
+    def <T> RequestBuilder.UrlBuilder<T> delete() {
+        new RequestBuilder.UrlBuilder<>(method: { Map p -> delete(p) })
+    }
+
     /**
      * Possible properties:<br/>
      * &emsp;<b>path</b> - a request path (appended to a base url defined at {@link #HttpClient(Map)} constructor)<br/>
@@ -164,6 +207,10 @@ class HttpClient {
     Response trace(Map properties) {
         def all = properties + [method: 'trace']
         performRequest all
+    }
+
+    def <T> RequestBuilder.UrlBuilder<T> trace() {
+        new RequestBuilder.UrlBuilder<>(method: { Map p -> trace(p) })
     }
 
     /**
@@ -180,6 +227,10 @@ class HttpClient {
         performRequest all
     }
 
+    def <T> RequestBuilder.UrlBuilder<T> patch() {
+        new RequestBuilder.UrlBuilder<>(method: { Map p -> patch(p) })
+    }
+
     /**
      * Possible properties:<br/>
      * &emsp;<b>path</b> - a request path (appended to a base url defined at {@link #HttpClient(Map)} constructor)<br/>
@@ -192,6 +243,10 @@ class HttpClient {
     Response options(Map properties) {
         def all = properties + [method: 'options']
         performRequest all
+    }
+
+    def <T> RequestBuilder.UrlBuilder<T> options() {
+        new RequestBuilder.UrlBuilder<>(method: { Map p -> options(p) })
     }
 
     private Response performRequest(Map properties) {
