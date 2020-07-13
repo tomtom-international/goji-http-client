@@ -78,8 +78,4 @@ class ResponseParser {
                 .collectEntries { [(it.key): it.value.value] } : [:]
     }
 
-    def getMapper() {
-        mapper
-    }
-
 }
