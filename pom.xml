@@ -335,4 +335,8 @@
         </profile>
     </profiles>
 
+    <prerequisites>
+        <maven>3.3.9</maven>
+    </prerequisites>
+
 </project>
