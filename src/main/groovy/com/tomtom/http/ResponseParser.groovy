@@ -30,28 +30,19 @@ class ResponseParser {
 
     private mapper = new ObjectMapper()
 
-    Response parse(
-            HttpResponse response,
-            Class type,
-            Class subtype) {
+    Response parse(HttpResponse response, Class type, Class subtype) {
         new Response(
                 statusCode: response.statusLine?.statusCode,
                 headers: headersOf(response) as Map<String, List<String>>,
                 body: bodyOf(response, type, subtype))
     }
 
-    private bodyOf(
-            HttpResponse response,
-            Class type,
-            Class subtype) {
+    private bodyOf(HttpResponse response, Class type, Class subtype) {
         def entity = response.entity as HttpEntity
         entity ? readEntity(entity, type, subtype) : null
     }
 
-    private readEntity(
-            HttpEntity entity,
-            Class rawType,
-            Class subtype) {
+    private readEntity(HttpEntity entity, Class rawType, Class subtype) {
         def content = EntityUtils.toString entity
         if (rawType) {
             def type = subtype ?
@@ -65,9 +56,7 @@ class ResponseParser {
         content
     }
 
-    private JavaType typeOf(
-            Class type,
-            Class subtype) {
+    private JavaType typeOf(Class type, Class subtype) {
         mapper.typeFactory
                 .constructParametricType type, subtype
     }
@@ -75,15 +64,14 @@ class ResponseParser {
     private JavaType typeOf(Class type) {
         mapper.typeFactory
                 .constructType(new TypeReference<Object>() {
-            @Override
-            Class getType() {
-                type
-            }
-        })
+                    @Override
+                    Class getType() {
+                        type
+                    }
+                })
     }
 
-    private static headersOf(
-            HttpResponse response) {
+    private static headersOf(HttpResponse response) {
         def allHeaders = response.allHeaders
         allHeaders ? allHeaders
                 .groupBy { it.name }
