@@ -50,7 +50,7 @@
 
     <properties>
         <groovy.version>3.0.6</groovy.version>
-        <httpclient.version>4.5.12</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <jackson-databind.version>2.11.3</jackson-databind.version>
 
         <gmavenplus-plugin.version>1.11.0</gmavenplus-plugin.version>
