@@ -5,7 +5,7 @@ trigger:
   - master
 
 pool:
-  vmImage: 'ubuntu-16.04'
+  vmImage: ubuntu-latest
 
 container: maven:slim
 
@@ -19,5 +19,5 @@ steps:
   - task: Maven@3
     inputs:
       goals: verify
-      options: '--define maven.repo.local=$(MAVEN_CACHE_FOLDER)'
+      options: --define maven.repo.local=$(MAVEN_CACHE_FOLDER)
       displayName: Verify
