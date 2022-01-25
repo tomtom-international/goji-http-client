@@ -160,7 +160,7 @@
     </dependencies>
 
     <distributionManagement>
-         <repository>
+        <repository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/releases</url>
         </repository>
@@ -203,6 +203,15 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <!-- solve A required class was missing : org/fusesource/jansi/AnsiRenderWriter -->
+                    <!-- more details: https://stackoverflow.com/questions/68958241/quarkus-2-1-4-mvnw-quarkusdev-not-working-on-windows-10 -->
+                    <dependency>
+                        <groupId>jline</groupId>
+                        <artifactId>jline</artifactId>
+                        <version>2.14.6</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
