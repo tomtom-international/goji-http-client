@@ -1,7 +1,4 @@
-# GOJI HTTP Client
-
-[![Build Status](https://travis-ci.org/tomtom-international/goji-http-client.svg?branch=master)](https://travis-ci.org/tomtom-international/goji-http-client) 
-[![Build Status](https://dev.azure.com/tomtomweb/CMR-Ultrasonic%20Sandbox%20Area/_apis/build/status/tomtom-international.goji-http-client?branchName=master)](https://dev.azure.com/tomtomweb/CMR-Ultrasonic%20Sandbox%20Area/_build/latest?definitionId=286&branchName=master)
+# GOJI HTTP Client [![Maven](https://github.com/tomtom-international/goji-http-client/actions/workflows/maven.yml/badge.svg)](https://github.com/tomtom-international/goji-http-client/actions/workflows/maven.yml)
 
 **GOJI** stands for: **Groovy-oriented** and **JSON-implying.** 
 
