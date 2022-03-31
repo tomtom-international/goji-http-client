@@ -87,6 +87,8 @@ Full Java API reference is available [here](doc/JAVA.md)
 
 <a id='changelog'></a>
 ## Changelog
+**[3.0.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.0.0/jar)**: (chore) Groovy 4 and other dependency updates
+
 **[2.0.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/2.0.0/jar)**: (feature) Java-friendly API
 
 **[1.4.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/1.4.0/jar)**: (chore) updated dependencies, including Groovy v2 -> v3 and Jackson (addressing [CVE-2019-17531](https://github.com/advisories/GHSA-gjmw-vf9h-g25v))
@@ -115,7 +117,7 @@ GOJI HTTP uses the [semantic versioning](http://semver.org/) strategy: MAJOR.MIN
 <dependency>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
