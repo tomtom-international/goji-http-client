@@ -49,7 +49,7 @@
     </scm>
 
     <properties>
-        <groovy.version>3.0.10</groovy.version>
+        <groovy.version>4.0.1</groovy.version>
         <httpclient.version>4.5.13</httpclient.version>
         <jackson-databind.version>2.13.2.1</jackson-databind.version>
 
@@ -65,7 +65,7 @@
 
         <cglib-nodep.version>3.3.0</cglib-nodep.version>
         <log4j.version>2.17.2</log4j.version>
-        <spock.version>2.1-groovy-3.0</spock.version>
+        <spock.version>2.2-M1-groovy-4.0</spock.version>
         <wiremock.version>2.27.2</wiremock.version>
 
         <maven.compiler.source>1.7</maven.compiler.source>
@@ -117,7 +117,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
+            <groupId>org.apache.groovy</groupId>
             <artifactId>groovy</artifactId>
             <version>${groovy.version}</version>
         </dependency>
@@ -253,7 +253,7 @@
                 <version>${gmavenplus-plugin.version}</version>
                 <dependencies>
                     <dependency>
-                        <groupId>org.codehaus.groovy</groupId>
+                        <groupId>org.apache.groovy</groupId>
                         <artifactId>groovy-xml</artifactId>
                         <version>${groovy.version}</version>
                     </dependency>
