@@ -27,6 +27,7 @@ limitations under the License.
    * [Supported HTTP methods](#http-methods)
    * [A request to an arbitrary url](#url)
    * [Base url](#base-url)
+   * [Query](#query)
    * [Request headers](#request-headers)
    * [Request body](#request-body)
       * [File upload](#file-upload)
@@ -87,6 +88,8 @@ Full Java API reference is available [here](doc/JAVA.md)
 
 <a id='changelog'></a>
 ## Changelog
+**[3.1.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.1.0/jar)**: (feat) query parameter support
+
 **[3.0.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.0.0/jar)**: (chore) Groovy 4 and other dependency updates
 
 **[2.0.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/2.0.0/jar)**: (feature) Java-friendly API
@@ -117,7 +120,7 @@ GOJI HTTP uses the [semantic versioning](http://semver.org/) strategy: MAJOR.MIN
 <dependency>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
 </dependency>
 ```
 
@@ -154,6 +157,21 @@ def http = new HttpClient(baseUrl: 'http://water-melon.com')
     
 http.get(path: '/slice')
 ```
+
+<a id='query'></a>
+### Query:
+
+You can either specify a query in `url` or `path`, or via `query` parameter:
+
+```groovy
+http.put(path: '/put?some=query&other=one&other=two')
+```
+
+```groovy
+http.put(path: '/put', query: [some: 'query', other: ['one', 'two']])
+```
+
+> _NB!_ if `url` or `path` contains a query already, `query` parameter is ignored.
 
 <a id='request-headers'></a>
 ### Request headers:
