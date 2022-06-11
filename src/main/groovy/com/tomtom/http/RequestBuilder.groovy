@@ -36,6 +36,10 @@ class RequestBuilder {
     HttpRequestBase request(Map properties) {
         def method = properties['method']
         def url = urlFrom properties
+
+        def query = properties['query'] as Map
+        if (query) url = addQuery url, query
+
         def request = requestFor method, url
 
         def headers = properties['headers'] as Map
@@ -53,12 +57,19 @@ class RequestBuilder {
         request
     }
 
-    private urlFrom(Map properties) {
+    private String urlFrom(Map properties) {
         def url = properties['url'] as String
         if (url) return url
         def path = properties['path']
         if (baseUrl && path) return "$baseUrl$path"
         throw new NoUrl()
+    }
+
+    private static addQuery(String url, Map query) {
+        if (url.contains('?')) return url
+        url + '?' + query.collect { k, v ->
+            v instanceof Collection ? v.collect { "$k=$it" }.join('&') : "$k=$v"
+        }.join('&')
     }
 
     private static addHeaders(request, Map headers) {
@@ -132,6 +143,15 @@ class RequestBuilder {
     static class ParametersBuilder<T> {
         private Function<Map, Response<T>> method
         private Map parameters
+
+        ParametersBuilder<T> query(String name, String value) {
+            parameters.query = parameters.query ?: [:]
+            if (parameters.query[name])
+                parameters.query[name] << value
+            else
+                parameters.query[name] = [value]
+            this
+        }
 
         ParametersBuilder<T> header(String name, String value) {
             parameters.headers = (parameters.headers ?: [:]) + [(name): value]

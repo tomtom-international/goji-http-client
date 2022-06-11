@@ -52,8 +52,8 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name  | mockMethod    | clientMethod
-        'GET' | WireMock.&get | http.&get
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
         'HEAD'    | WireMock.&head    | http.&head
         'POST'    | WireMock.&post    | http.&post
         'PUT'     | WireMock.&put     | http.&put
@@ -77,8 +77,8 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name  | mockMethod    | clientMethod
-        'GET' | WireMock.&get | http.&get
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
         'HEAD'    | WireMock.&head    | http.&head
         'POST'    | WireMock.&post    | http.&post
         'PUT'     | WireMock.&put     | http.&put
@@ -102,8 +102,8 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name  | mockMethod    | clientMethod
-        'GET' | WireMock.&get | http.&get
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
         'HEAD'    | WireMock.&head    | http.&head
         'POST'    | WireMock.&post    | http.&post
         'PUT'     | WireMock.&put     | http.&put
@@ -127,8 +127,8 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name  | mockMethod    | clientMethod
-        'GET' | WireMock.&get | http.&get
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
         'HEAD'    | WireMock.&head    | http.&head
         'POST'    | WireMock.&post    | http.&post
         'PUT'     | WireMock.&put     | http.&put
@@ -147,9 +147,9 @@ class JavaAPISpec extends HttpClientSpec {
 
         when:
         def response = clientMethod()
-            .path('/freezer')
-            .body('ice-cream')
-            .execute()
+                .path('/freezer')
+                .body('ice-cream')
+                .execute()
 
         then:
         response.statusCode == OK
@@ -171,9 +171,9 @@ class JavaAPISpec extends HttpClientSpec {
 
         when:
         def response = clientMethod()
-            .path('/freezer')
-            .body(file)
-            .execute()
+                .path('/freezer')
+                .body(file)
+                .execute()
 
         then:
         response.statusCode == OK
@@ -194,9 +194,9 @@ class JavaAPISpec extends HttpClientSpec {
 
         when:
         def response = clientMethod()
-            .path('/freezer')
-            .body([type: 'ice-cream'])
-            .execute()
+                .path('/freezer')
+                .body([type: 'ice-cream'])
+                .execute()
 
         then:
         response.statusCode == OK
@@ -227,8 +227,8 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name  | mockMethod    | clientMethod
-        'GET' | WireMock.&get | http.&get
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
         'HEAD'    | WireMock.&head    | http.&head
         'POST'    | WireMock.&post    | http.&post
         'PUT'     | WireMock.&put     | http.&put
@@ -254,8 +254,8 @@ class JavaAPISpec extends HttpClientSpec {
         response.body == 'ice-cream'
 
         where:
-        name  | mockMethod    | clientMethod
-        'GET' | WireMock.&get | http.&get
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
         'POST'    | WireMock.&post    | http.&post
         'PUT'     | WireMock.&put     | http.&put
         'DELETE'  | WireMock.&delete  | http.&delete
@@ -281,8 +281,8 @@ class JavaAPISpec extends HttpClientSpec {
         response.body == [contents: ['ice-cream']]
 
         where:
-        name  | mockMethod    | clientMethod
-        'GET' | WireMock.&get | http.&get
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
         'POST'    | WireMock.&post    | http.&post
         'PUT'     | WireMock.&put     | http.&put
         'DELETE'  | WireMock.&delete  | http.&delete
@@ -309,8 +309,8 @@ class JavaAPISpec extends HttpClientSpec {
         response.body == [[type: 'ice-cream']]
 
         where:
-        name  | mockMethod    | clientMethod
-        'GET' | WireMock.&get | http.&get
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
         'POST'    | WireMock.&post    | http.&post
         'PUT'     | WireMock.&put     | http.&put
         'DELETE'  | WireMock.&delete  | http.&delete
@@ -348,8 +348,8 @@ class JavaAPISpec extends HttpClientSpec {
 
         when:
         def response = clientMethod()
-            .path('/freezer')
-            .execute()
+                .path('/freezer')
+                .execute()
 
         then:
         response.statusCode == OK
@@ -357,6 +357,33 @@ class JavaAPISpec extends HttpClientSpec {
             temperature == ['-5']
             content == ['ice-cream', 'frozen kale']
         }
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'HEAD'    | WireMock.&head    | http.&head
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'executes a #name with query map'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer?foo=bar&foo=baz')).willReturn(ok()))
+
+        when:
+        def response = clientMethod()
+                .path('/freezer')
+                .query('foo', 'bar')
+                .query('foo', 'baz')
+                .execute()
+
+        then:
+        response.statusCode == OK
 
         where:
         name      | mockMethod        | clientMethod

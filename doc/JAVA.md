@@ -32,6 +32,20 @@ HttpClient http = new HttpClient("http://water-melon.com");
 http.get().path("/slice").execute();
 ```
 
+### Query:
+
+You can either specify a query in `url` or `path`, or via `query` parameter:
+
+```groovy
+http.put().path("/put?some=query&some=more")
+```
+
+```groovy
+http.put().path("/put").query("some", "query").query("some", "more")
+```
+
+> _NB!_ if `url` or `path` contains a query already, `query` parameter is ignored.
+
 ### Request headers:
 
 ```groovy

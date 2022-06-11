@@ -301,4 +301,95 @@ class GroovyAPISpec extends HttpClientSpec {
         'OPTIONS' | WireMock.&options | http.&options
     }
 
+    @Unroll
+    def 'executes a #name with query map'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer?foo=bar')).willReturn(ok()))
+
+        when:
+        def response = clientMethod(path: '/freezer', query: [foo: 'bar'])
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'HEAD'    | WireMock.&head    | http.&head
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'supports multiple query parameters'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer?foo=bar&foo=baz')).willReturn(ok()))
+
+        when:
+        def response = clientMethod(path: '/freezer', query: [foo: ['bar', 'baz']])
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'HEAD'    | WireMock.&head    | http.&head
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'ignores query param if path contains a query'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer?a=b')).willReturn(ok()))
+
+        when:
+        def response = clientMethod(path: '/freezer?a=b', query: [c: 'd'])
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'HEAD'    | WireMock.&head    | http.&head
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'ignores query param if URL contains a query'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer?a=b')).willReturn(ok()))
+
+        when:
+        def response = clientMethod(url: "http://localhost:${mock.port()}/freezer?a=b", query: [c: 'd'])
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'HEAD'    | WireMock.&head    | http.&head
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
 }
