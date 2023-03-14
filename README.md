@@ -304,7 +304,7 @@ Creating a release is usually done from `main`. Before the release:
 
 And then deploy it to Maven Central (not auto-released):
 ```
-mvn clean deploy clean deploy -Prelease
+mvn clean deploy -Prelease
 ```
 
 And release (when successful):
