@@ -294,6 +294,24 @@ See more use-cases in [tests](src/test/groovy)
 
 None yet!
 
+<a id='release'></a>
+## Creating a release and deploying to Maven Central
+
+Creating a release is usually done from `main`. Before the release:
+
+- Make sure the version is updated.
+- Make sure the `Changelog` (above) is updated.
+
+And then deploy it to Maven Central (not auto-released):
+```
+mvn clean deploy -Preleasemvn clean deploy -Prelease
+```
+
+And release (when successful):
+```
+mvn nexus-staging:release
+```
+
 <a id='contact'></a>
 ## Contact
 
