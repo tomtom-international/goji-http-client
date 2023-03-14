@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>3.1.0</version>
+    <version>3.1.1</version>
     <name>GOJI HTTP Client</name>
     <description>
         A wrapper around Apache HttpClient and Jackson Databind libraries with lean Groovy syntax.
