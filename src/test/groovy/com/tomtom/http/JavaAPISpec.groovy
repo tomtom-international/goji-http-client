@@ -397,4 +397,33 @@ class JavaAPISpec extends HttpClientSpec {
         'OPTIONS' | WireMock.&options | http.&options
     }
 
+    @Unroll
+    def 'headers override default headers for #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .withHeader('shelve', equalTo('bottom'))
+                .willReturn(ok()))
+        and:
+        def http = new HttpClient("http://localhost:${mock.port()}".toURL(), [shelve: 'top'])
+
+        when:
+        def response = fn(http)
+                .url("http://localhost:${mock.port()}/freezer")
+                .header('shelve', 'bottom')
+                .execute()
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name  | mockMethod        | fn
+        'GET' | WireMock.&get     | { h -> h.get() }
+        'GET' | WireMock.&head    | { h -> h.head() }
+        'GET' | WireMock.&post    | { h -> h.post() }
+        'GET' | WireMock.&put     | { h -> h.put() }
+        'GET' | WireMock.&delete  | { h -> h.delete() }
+        'GET' | WireMock.&trace   | { h -> h.trace() }
+        'GET' | WireMock.&patch   | { h -> h.patch() }
+        'GET' | WireMock.&options | { h -> h.options() }
+    }
 }

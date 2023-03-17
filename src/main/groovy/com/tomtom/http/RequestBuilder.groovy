@@ -32,6 +32,7 @@ class RequestBuilder {
 
     private ObjectMapper mapper = new ObjectMapper()
     private String baseUrl
+    private Map defaultHeaders
 
     HttpRequestBase request(Map properties) {
         def method = properties['method']
@@ -41,6 +42,8 @@ class RequestBuilder {
         if (query) url = addQuery url, query
 
         def request = requestFor method, url
+
+        if (defaultHeaders) addHeaders request, defaultHeaders
 
         def headers = properties['headers'] as Map
         if (headers) addHeaders request, headers

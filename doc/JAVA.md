@@ -27,7 +27,7 @@ http.get().url("http://pizza-delivery.org/margheritas").execute();
 
 If you want to make a number of requests to a given service, you can specify the `baseUrl` constructor parameter:
 ```groovy
-HttpClient http = new HttpClient("http://water-melon.com");
+var http = new HttpClient("http://water-melon.com");
     
 http.get().path("/slice").execute();
 ```
@@ -54,6 +54,20 @@ http.put()
     .header("Accept", "application/json")
     .header("Content-Type", "application/json")
     .execute();
+```
+
+#### Default headers:
+
+Default headers are sent with each request. It is also possible to override default headers per request:
+
+```groovy
+var http = new HttpClient("http://water-melon.com", [
+        Accept: 'application/json',
+        'Content-Type': 'application/json'])
+http.put()
+        .path("/put")
+        .header("Content-Type", "application/json")
+        .execute();
 ```
 
 ### Request body:
@@ -90,7 +104,7 @@ http.put()
 ### Response status code
 
 ```groovy
-Response response = http.get().path("/get").execute();
+var response = http.get().path("/get").execute();
     
 assert response.statusCode() == ResponseCode.OK;
 ```
@@ -98,7 +112,7 @@ assert response.statusCode() == ResponseCode.OK;
 ### Response headers
 
 ```groovy
-Response response = http.get().path("/get").execute();
+var response = http.get().path("/get").execute();
     
 assert response.headers().equals(Map.of(
     "Content-Type", List.of("application/json", "application/vnd.tomtom+json"),

@@ -29,6 +29,7 @@ limitations under the License.
    * [Base url](#base-url)
    * [Query](#query)
    * [Request headers](#request-headers)
+     * [Default headers](#default-headers)
    * [Request body](#request-body)
       * [File upload](#file-upload)
 * [Handling responses](#responses)
@@ -88,6 +89,10 @@ Full Java API reference is available [here](doc/JAVA.md)
 
 <a id='changelog'></a>
 ## Changelog
+**[3.2.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.2.0/jar)**: (feat) default headers
+
+**[3.1.1](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.1.1/jar)**: (security) remove vulnerable dependencies
+
 **[3.1.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.1.0/jar)**: (feat) query parameter support
 
 **[3.0.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.0.0/jar)**: (chore) Groovy 4 and other dependency updates
@@ -120,7 +125,7 @@ GOJI HTTP uses the [semantic versioning](http://semver.org/) strategy: MAJOR.MIN
 <dependency>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
 </dependency>
 ```
 
@@ -182,6 +187,18 @@ http.put(
     headers: [
         Accept: 'application/json',
         'Content-Type': 'application/json'])
+```
+
+<a id='default-headers'></a>
+#### Default headers:
+
+Default headers are sent with each request. It is also possible to override default headers per request: 
+
+```groovy
+def http = new HttpClient(defaultHeaders: [
+        Accept: 'application/json',
+        'Content-Type': 'application/json']) 
+http.put(path: '/put', headers: ['Content-Type': 'application/xml'])
 ```
 
 <a id='request-body'></a>
