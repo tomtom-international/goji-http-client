@@ -392,4 +392,60 @@ class GroovyAPISpec extends HttpClientSpec {
         'PATCH'   | WireMock.&patch   | http.&patch
         'OPTIONS' | WireMock.&options | http.&options
     }
+
+    @Unroll
+    def 'allows setting default headers for #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .withHeader('shelve', equalTo('top'))
+                .willReturn(ok()))
+        and:
+        def http = new HttpClient(defaultHeaders: [shelve: 'top'])
+
+        when:
+        def response = fn(http, [url: "http://localhost:${mock.port()}/freezer"])
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name  | mockMethod        | fn
+        'GET' | WireMock.&get     | { h, params -> h.get(params) }
+        'GET' | WireMock.&head    | { h, params -> h.head(params) }
+        'GET' | WireMock.&post    | { h, params -> h.post(params) }
+        'GET' | WireMock.&put     | { h, params -> h.put(params) }
+        'GET' | WireMock.&delete  | { h, params -> h.delete(params) }
+        'GET' | WireMock.&trace   | { h, params -> h.trace(params) }
+        'GET' | WireMock.&patch   | { h, params -> h.patch(params) }
+        'GET' | WireMock.&options | { h, params -> h.options(params) }
+    }
+
+    @Unroll
+    def 'headers override default headers for #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/freezer'))
+                .withHeader('shelve', equalTo('bottom'))
+                .willReturn(ok()))
+        and:
+        def http = new HttpClient(defaultHeaders: [shelve: 'top'])
+
+        when:
+        def response = fn(http, [
+                url    : "http://localhost:${mock.port()}/freezer",
+                headers: [shelve: 'bottom']])
+
+        then:
+        response.statusCode == OK
+
+        where:
+        name  | mockMethod        | fn
+        'GET' | WireMock.&get     | { h, params -> h.get(params) }
+        'GET' | WireMock.&head    | { h, params -> h.head(params) }
+        'GET' | WireMock.&post    | { h, params -> h.post(params) }
+        'GET' | WireMock.&put     | { h, params -> h.put(params) }
+        'GET' | WireMock.&delete  | { h, params -> h.delete(params) }
+        'GET' | WireMock.&trace   | { h, params -> h.trace(params) }
+        'GET' | WireMock.&patch   | { h, params -> h.patch(params) }
+        'GET' | WireMock.&options | { h, params -> h.options(params) }
+    }
 }

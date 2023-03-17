@@ -49,6 +49,8 @@ class HttpClient {
         def builderParams = [mapper: mapper]
         def baseUrl = properties['baseUrl'] as String
         if (baseUrl) builderParams += [baseUrl: baseUrl]
+        def defaultHeaders = properties['defaultHeaders']
+        if (defaultHeaders) builderParams += [defaultHeaders: defaultHeaders]
 
         builder = properties['builder'] as RequestBuilder ?: new RequestBuilder(builderParams)
         parser = properties['parser'] as ResponseParser ?: new ResponseParser(mapper: mapper)
@@ -63,6 +65,15 @@ class HttpClient {
     }
 
     /**
+     * Builds {@link HttpClient} with a base URL and default headers.
+     * @param baseUrl a url prefix for request {@code path} parameter
+     * @param defaultHeaders default headers
+     */
+    HttpClient(String baseUrl, Map defaultHeaders) {
+        this(baseUrl: baseUrl, defaultHeaders: defaultHeaders)
+    }
+
+    /**
      * Builds {@link HttpClient} with a base URL.
      * @param baseUrl a url prefix for request {@code path} parameter
      */
@@ -71,11 +82,29 @@ class HttpClient {
     }
 
     /**
+     * Builds {@link HttpClient} with a base URL and default headers.
+     * @param baseUrl a url prefix for request {@code path} parameter
+     * @param defaultHeaders default headers
+     */
+    HttpClient(URI baseUrl, Map defaultHeaders) {
+        this(baseUrl: baseUrl, defaultHeaders: defaultHeaders)
+    }
+
+    /**
      * Builds {@link HttpClient} with a base URL.
      * @param baseUrl a url prefix for request {@code path} parameter
      */
     HttpClient(URL baseUrl) {
         this(baseUrl.toString())
+    }
+
+    /**
+     * Builds {@link HttpClient} with a base URL and default headers.
+     * @param baseUrl a url prefix for request {@code path} parameter
+     * @param defaultHeaders default headers
+     */
+    HttpClient(URL baseUrl, Map defaultHeaders) {
+        this(baseUrl: baseUrl, defaultHeaders: defaultHeaders)
     }
 
     private static ObjectMapper defaultMapper() {
