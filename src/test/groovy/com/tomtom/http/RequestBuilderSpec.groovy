@@ -34,7 +34,7 @@ class RequestBuilderSpec extends Specification {
                 path: '/coverage')
 
         then:
-        request.getURI() == 'bar'.toURI()
+        request.uri == 'bar'.toURI()
     }
 
     def 'either url or base url and path is required'() {

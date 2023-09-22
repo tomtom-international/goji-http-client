@@ -21,9 +21,9 @@ import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tomtom.http.response.Response
 import groovy.transform.PackageScope
-import org.apache.http.HttpEntity
-import org.apache.http.HttpResponse
-import org.apache.http.util.EntityUtils
+import org.apache.hc.core5.http.HttpEntity
+import org.apache.hc.core5.http.HttpResponse
+import org.apache.hc.core5.http.io.entity.EntityUtils
 
 @PackageScope
 class ResponseParser {
@@ -32,7 +32,7 @@ class ResponseParser {
 
     Response parse(HttpResponse response, Class type, Class subtype) {
         new Response(
-                statusCode: response.statusLine?.statusCode,
+                statusCode: response.code,
                 headers: headersOf(response) as Map<String, List<String>>,
                 body: bodyOf(response, type, subtype))
     }
@@ -72,8 +72,8 @@ class ResponseParser {
     }
 
     private static headersOf(HttpResponse response) {
-        def allHeaders = response.allHeaders
-        allHeaders ? allHeaders
+        def headers = response.headers
+        headers ? headers
                 .groupBy { it.name }
                 .collectEntries { [(it.key): it.value.value] } : [:]
     }

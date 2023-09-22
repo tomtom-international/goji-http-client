@@ -16,7 +16,7 @@
 
 package com.tomtom.http.response
 
-import static org.apache.http.HttpStatus.*
+import static org.apache.hc.core5.http.HttpStatus.*
 
 class ResponseCode {
 
