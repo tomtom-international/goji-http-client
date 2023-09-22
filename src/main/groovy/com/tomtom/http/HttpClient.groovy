@@ -18,16 +18,11 @@ package com.tomtom.http
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tomtom.http.response.Response
-import org.apache.http.client.HttpClient as ApacheHttpClient
-import org.apache.http.conn.ssl.NoopHostnameVerifier
-import org.apache.http.conn.ssl.TrustStrategy
-import org.apache.http.impl.client.HttpClientBuilder
-import org.apache.http.ssl.SSLContexts
-
-import java.security.cert.CertificateException
-import java.security.cert.X509Certificate
+import org.apache.hc.client5.http.classic.HttpClient as ApacheHttpClient
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
+import static org.apache.hc.client5.http.routing.RoutingSupport.determineHost
 
 class HttpClient {
 
@@ -39,7 +34,7 @@ class HttpClient {
     /**
      * Builds {@link HttpClient} with a number of (optional) parameters.
      * @param baseUrl a url prefix for request {@code path} parameter
-     * @param client a custom {@link org.apache.http.client.HttpClient}
+     * @param client a custom {@link org.apache.hc.client5.http.classic.HttpClient}
      * @param mapper a custom {@link ObjectMapper}
      */
     HttpClient(Map properties = [:]) {
@@ -112,21 +107,8 @@ class HttpClient {
     }
 
     private static ApacheHttpClient defaultClient() {
-        def context = SSLContexts
-                .custom()
-                .loadTrustMaterial(null, new TrustStrategy() {
-                    @Override
-                    boolean isTrusted(
-                            X509Certificate[] chain,
-                            String authType) throws CertificateException {
-                        true
-                    }
-                }).build()
-
         HttpClientBuilder
                 .create()
-                .setSSLContext(context)
-                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                 .disableAuthCaching()
                 .disableAutomaticRetries()
                 .disableCookieManagement()
@@ -280,11 +262,12 @@ class HttpClient {
 
     private Response performRequest(Map properties) {
         def request = builder.request properties
-        def response = client.execute request
-        parser.parse(
-                response,
-                properties['expecting'] as Class,
-                properties['of'] as Class)
+        client.execute(determineHost(request), request, response -> {
+            parser.parse(
+                    response,
+                    properties['expecting'] as Class,
+                    properties['of'] as Class)
+        })
     }
 
 }

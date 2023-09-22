@@ -19,11 +19,12 @@ package com.tomtom.http
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tomtom.http.response.Response
 import groovy.transform.PackageScope
-import org.apache.http.HttpEntity
-import org.apache.http.client.methods.*
-import org.apache.http.entity.StringEntity
-import org.apache.http.entity.mime.MultipartEntityBuilder
-import org.apache.http.message.BasicHeader
+import org.apache.hc.client5.http.classic.methods.*
+import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder
+import org.apache.hc.core5.http.ClassicHttpRequest
+import org.apache.hc.core5.http.HttpEntity
+import org.apache.hc.core5.http.io.entity.StringEntity
+import org.apache.hc.core5.http.message.BasicHeader
 
 import java.util.function.Function
 
@@ -34,7 +35,7 @@ class RequestBuilder {
     private String baseUrl
     private Map defaultHeaders
 
-    HttpRequestBase request(Map properties) {
+    ClassicHttpRequest request(Map properties) {
         def method = properties['method']
         def url = urlFrom properties
 
@@ -97,10 +98,10 @@ class RequestBuilder {
     }
 
     private static addBody(request, HttpEntity body) {
-        (request as HttpEntityEnclosingRequestBase).setEntity body
+        request.setEntity body
     }
 
-    private static HttpRequestBase requestFor(method, String url) {
+    private static HttpUriRequestBase requestFor(method, String url) {
         switch (method) {
             case 'head':
                 return new HttpHead(url)
