@@ -89,6 +89,8 @@ Full Java API reference is available [here](doc/JAVA.md)
 
 <a id='changelog'></a>
 ## Changelog
+**[(draft) 3.3.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.3.0/jar)**: (chore) migrate to [org.wiremock](https://central.sonatype.com/artifact/org.wiremock/wiremock) & [httclient5](https://central.sonatype.com/artifact/org.apache.httpcomponents.client5/httpclient5)
+
 **[3.2.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.2.0/jar)**: (feat) default headers
 
 **[3.1.1](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.1.1/jar)**: (security) remove vulnerable dependencies
