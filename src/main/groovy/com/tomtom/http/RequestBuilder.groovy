@@ -25,12 +25,15 @@ import org.apache.hc.core5.http.ClassicHttpRequest
 import org.apache.hc.core5.http.HttpEntity
 import org.apache.hc.core5.http.io.entity.StringEntity
 import org.apache.hc.core5.http.message.BasicHeader
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import java.util.function.Function
 
 @PackageScope
 class RequestBuilder {
 
+    private static Logger logger = LogManager.getLogger(HttpClient)
     private ObjectMapper mapper = new ObjectMapper()
     private String baseUrl
     private Map defaultHeaders
@@ -43,18 +46,21 @@ class RequestBuilder {
         if (query) url = addQuery url, query
 
         def request = requestFor method, url
+        logger.info("${request.method} ${url}")
 
         if (defaultHeaders) addHeaders request, defaultHeaders
-
         def headers = properties['headers'] as Map
         if (headers) addHeaders request, headers
+        if (request.headers) logger.info("    headers: ${request.headers}")
 
         def body = properties['body']
         if (body)
-            if (body instanceof File)
+            if (body instanceof File) {
+                logger.info("    body: <${body} file content omitted>")
                 addFile request, body
-            else {
+            } else {
                 def serialized = serialize body
+                logger.info("    body: ${serialized}")
                 addBody request, serialized
             }
 
