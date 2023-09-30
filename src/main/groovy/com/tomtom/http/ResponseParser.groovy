@@ -34,7 +34,7 @@ class ResponseParser {
     private mapper = new ObjectMapper()
 
     Response parse(HttpResponse response, Class type, Class subtype) {
-        logger.info "=> response: ${response.code}"
+        logger.info('=> response: {}', response.code)
         new Response(
                 statusCode: response.code,
                 headers: headersOf(response) as Map<String, List<String>>,
@@ -47,15 +47,15 @@ class ResponseParser {
     }
 
     private readEntity(HttpEntity entity, Class rawType, Class subtype) {
-        def content = EntityUtils.toString entity
-        if (content) logger.info "    body: ${content}"
+        def content = EntityUtils.toString(entity)
+        if (content) logger.info('    body: {}', content)
         if (rawType) {
             def type = subtype ?
                     typeOf(rawType, subtype) : typeOf(rawType)
             try {
                 return mapper.readValue(content, type)
             } catch (Exception e) {
-                logger.warn "Failed to deserialize $content to $rawType due to $e.message, defaulting to string"
+                logger.warn('Failed to deserialize {} to {} due to {}, defaulting to string', content, rawType, e.message)
             }
         }
         content
@@ -79,7 +79,7 @@ class ResponseParser {
     private static headersOf(HttpResponse response) {
         def headers = response.headers
         if (headers) {
-            logger.info "    headers: ${response.headers}"
+            logger.info('    headers: {}', response.headers)
             headers
                     .groupBy { it.name }
                     .collectEntries { [(it.key): it.value.value] }

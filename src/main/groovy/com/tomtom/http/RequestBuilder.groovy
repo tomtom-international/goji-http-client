@@ -40,28 +40,28 @@ class RequestBuilder {
 
     ClassicHttpRequest request(Map properties) {
         def method = properties['method']
-        def url = urlFrom properties
+        def url = urlFrom(properties)
 
         def query = properties['query'] as Map
-        if (query) url = addQuery url, query
+        if (query) url = addQuery(url, query)
 
-        def request = requestFor method, url
-        logger.info("${request.method} ${url}")
+        def request = requestFor(method, url)
+        logger.info('{} {}', request.method, url)
 
-        if (defaultHeaders) addHeaders request, defaultHeaders
+        if (defaultHeaders) addHeaders(request, defaultHeaders)
         def headers = properties['headers'] as Map
-        if (headers) addHeaders request, headers
-        if (request.headers) logger.info("    headers: ${request.headers}")
+        if (headers) addHeaders(request, headers)
+        if (request.headers) logger.info('    headers: {}', request.headers)
 
         def body = properties['body']
         if (body)
             if (body instanceof File) {
-                logger.info("    body: <${body} file content omitted>")
-                addFile request, body
+                logger.info('    body: <{} file content omitted>', body)
+                addFile(request, body)
             } else {
-                def serialized = serialize body
-                logger.info("    body: ${serialized}")
-                addBody request, serialized
+                def serialized = serialize(body)
+                logger.info('    body: {}', serialized)
+                addBody(request, serialized)
             }
 
         request
