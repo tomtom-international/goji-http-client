@@ -25,37 +25,43 @@ import org.apache.hc.core5.http.ClassicHttpRequest
 import org.apache.hc.core5.http.HttpEntity
 import org.apache.hc.core5.http.io.entity.StringEntity
 import org.apache.hc.core5.http.message.BasicHeader
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import java.util.function.Function
 
 @PackageScope
 class RequestBuilder {
 
+    private static Logger logger = LogManager.getLogger(HttpClient)
     private ObjectMapper mapper = new ObjectMapper()
     private String baseUrl
     private Map defaultHeaders
 
     ClassicHttpRequest request(Map properties) {
         def method = properties['method']
-        def url = urlFrom properties
+        def url = urlFrom(properties)
 
         def query = properties['query'] as Map
-        if (query) url = addQuery url, query
+        if (query) url = addQuery(url, query)
 
-        def request = requestFor method, url
+        def request = requestFor(method, url)
+        logger.info('{} {}', request.method, url)
 
-        if (defaultHeaders) addHeaders request, defaultHeaders
-
+        if (defaultHeaders) addHeaders(request, defaultHeaders)
         def headers = properties['headers'] as Map
-        if (headers) addHeaders request, headers
+        if (headers) addHeaders(request, headers)
+        if (request.headers) logger.info('    headers: {}', request.headers)
 
         def body = properties['body']
         if (body)
-            if (body instanceof File)
-                addFile request, body
-            else {
-                def serialized = serialize body
-                addBody request, serialized
+            if (body instanceof File) {
+                logger.info('    body: <{} file content omitted>', body)
+                addFile(request, body)
+            } else {
+                def serialized = serialize(body)
+                logger.info('    body: {}', serialized)
+                addBody(request, serialized)
             }
 
         request

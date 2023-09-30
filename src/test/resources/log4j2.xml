@@ -1,0 +1,12 @@
+<Configuration status="info" name="http-client">
+    <Appenders>
+        <Console name="stdout" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %p %m%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.tomtom.http.HttpClient" level="info" additivity="false">
+            <AppenderRef ref="stdout"/>
+        </Logger>
+    </Loggers>
+</Configuration>
