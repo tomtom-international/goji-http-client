@@ -87,7 +87,7 @@ class IceCreamTest {
 Full Java API reference is available [here](doc/JAVA.md)
 
 ## Changelog
-**[3.3.0](https://search.maven.org/artifact/com.tomtom.http/goji-http-client/3.3.0)**: 
+**[3.3.0](https://central.sonatype.com/artifact/com.tomtom.http/goji-http-client/3.3.0)**: 
   * (feat) [logging](#logging)
   * (chore) migrate to [org.wiremock](https://central.sonatype.com/artifact/org.wiremock/wiremock) & [httclient5](https://central.sonatype.com/artifact/org.apache.httpcomponents.client5/httpclient5)
 
