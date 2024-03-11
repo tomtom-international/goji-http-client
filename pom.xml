@@ -64,7 +64,7 @@
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 
         <cglib-nodep.version>3.3.0</cglib-nodep.version>
-        <log4j.version>2.23.0</log4j.version>
+        <log4j.version>2.23.1</log4j.version>
         <spock.version>2.3-groovy-4.0</spock.version>
         <wiremock.version>3.4.2</wiremock.version>
 
