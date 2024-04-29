@@ -66,7 +66,7 @@
         <cglib-nodep.version>3.3.0</cglib-nodep.version>
         <log4j.version>2.23.1</log4j.version>
         <spock.version>2.3-groovy-4.0</spock.version>
-        <wiremock.version>3.5.2</wiremock.version>
+        <wiremock.version>3.5.4</wiremock.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
