@@ -206,6 +206,56 @@ class GroovyAPISpec extends HttpClientSpec {
     }
 
     @Unroll
+    def 'parses decimals as doubles by default for #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/info'))
+                .willReturn(ok('{"price": 10.00}')))
+
+        when:
+        def response = clientMethod(path: '/info', expecting: Map)
+
+        then:
+        response.statusCode == OK
+        response.body == [price: 10.0]
+        response.body.price instanceof Double
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
+    def 'parses decimals as given type for custom objects for #name'() {
+        given:
+        mock.givenThat(mockMethod(urlEqualTo('/info'))
+                .willReturn(ok('{"price": 10.00}')))
+
+        when:
+        def response = clientMethod(path: '/info', expecting: Info)
+
+        then:
+        response.statusCode == OK
+        response.body == new Info(price: 10.0)
+        response.body.price instanceof BigDecimal
+
+        where:
+        name      | mockMethod        | clientMethod
+        'GET'     | WireMock.&get     | http.&get
+        'POST'    | WireMock.&post    | http.&post
+        'PUT'     | WireMock.&put     | http.&put
+        'DELETE'  | WireMock.&delete  | http.&delete
+        'TRACE'   | WireMock.&trace   | http.&trace
+        'PATCH'   | WireMock.&patch   | http.&patch
+        'OPTIONS' | WireMock.&options | http.&options
+    }
+
+    @Unroll
     def 'parses response body as generic for #name'() {
         given:
         mock.givenThat(mockMethod(urlEqualTo('/freezer'))
