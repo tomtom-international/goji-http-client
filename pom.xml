@@ -49,7 +49,7 @@
     </scm>
 
     <properties>
-        <groovy.version>4.0.25</groovy.version>
+        <groovy.version>4.0.26</groovy.version>
         <httpclient.version>5.4.2</httpclient.version>
         <jackson-databind.version>2.18.2</jackson-databind.version>
 
