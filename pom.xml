@@ -51,7 +51,7 @@
     <properties>
         <groovy.version>4.0.27</groovy.version>
         <httpclient.version>5.5</httpclient.version>
-        <jackson-databind.version>2.19.1</jackson-databind.version>
+        <jackson-databind.version>2.19.2</jackson-databind.version>
 
         <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
         <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
