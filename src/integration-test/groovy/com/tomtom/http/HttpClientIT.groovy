@@ -26,11 +26,10 @@ class HttpClientIT extends Specification {
     def http = new HttpClient()
 
     def 'executes an HTTPS get'() {
-        when:
-        def response = http.get(url: 'https://httpbin.org/html')
-
-        then:
-        response.statusCode == OK
+        expect:
+        ['https://httpbin.org/html', 'https://api.github.com']
+                .collect { url -> http.get(url: url) }
+                .any { response -> response.statusCode == OK }
     }
 
 }

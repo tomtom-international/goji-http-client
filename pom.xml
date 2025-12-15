@@ -49,7 +49,7 @@
     </scm>
 
     <properties>
-        <groovy.version>4.0.29</groovy.version>
+        <groovy.version>5.0.2</groovy.version>
         <httpclient.version>5.5.1</httpclient.version>
         <jackson-databind.version>2.20.1</jackson-databind.version>
 
@@ -65,11 +65,11 @@
 
         <cglib-nodep.version>3.3.0</cglib-nodep.version>
         <log4j.version>2.25.2</log4j.version>
-        <spock.version>2.3-groovy-4.0</spock.version>
+        <spock.version>2.4-groovy-5.0</spock.version>
         <wiremock.version>3.13.2</wiremock.version>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
     <dependencies>
