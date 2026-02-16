@@ -53,7 +53,7 @@
         <httpclient.version>5.6</httpclient.version>
         <jackson-databind.version>2.21.0</jackson-databind.version>
 
-        <gmavenplus-plugin.version>4.3.0</gmavenplus-plugin.version>
+        <gmavenplus-plugin.version>4.3.1</gmavenplus-plugin.version>
         <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
         <groovydoc-maven-plugin.version>2.1</groovydoc-maven-plugin.version>
