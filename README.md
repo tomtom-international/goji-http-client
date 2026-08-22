@@ -87,6 +87,9 @@ class IceCreamTest {
 Full Java API reference is available [here](doc/JAVA.md)
 
 ## Changelog
+**[3.4.0](https://central.sonatype.com/artifact/com.tomtom.http/goji-http-client/3.4.0)**:
+* (feat) QUERY HTTP method support
+
 **[3.3.0](https://central.sonatype.com/artifact/com.tomtom.http/goji-http-client/3.3.0)**: 
   * (feat) [logging](#logging)
   * (chore) migrate to [org.wiremock](https://central.sonatype.com/artifact/org.wiremock/wiremock) & [httclient5](https://central.sonatype.com/artifact/org.apache.httpcomponents.client5/httpclient5)
@@ -119,7 +122,7 @@ Full Java API reference is available [here](doc/JAVA.md)
 
 GOJI HTTP uses the [semantic versioning](http://semver.org/) strategy: MAJOR.MINOR.PATCH.
 
-Check [Maven central repository](https://central.sonatype.com/artifact/com.tomtom.http/goji-http-client/3.3.0) for snippets to add the client as a dependency for your build system.  
+Check [Maven central repository](https://central.sonatype.com/artifact/com.tomtom.http/goji-http-client/3.4.0) for snippets to add the client as a dependency for your build system.  
 
 <a id='requests'></a>
 ## Request examples
@@ -127,15 +130,17 @@ Check [Maven central repository](https://central.sonatype.com/artifact/com.tomto
 <a id='http-methods'></a>
 ### Supported HTTP methods
 
-`GET`, `POST`, `PUT` and `DELETE` are supported:
+`GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `TRACE`, `PATCH` and `QUERY` are supported:
 ```groovy
 http.get()
+http.head()
 http.post()
 http.put()
 http.delete()
+http.options()
 http.trace()
 http.patch()
-http.options()
+http.query()
 ```
 
 <a id='url'></a>

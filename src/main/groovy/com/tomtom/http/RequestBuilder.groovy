@@ -109,10 +109,10 @@ class RequestBuilder {
 
     private static HttpUriRequestBase requestFor(method, String url) {
         switch (method) {
-            case 'head':
-                return new HttpHead(url)
             case 'get':
                 return new HttpGet(url)
+            case 'head':
+                return new HttpHead(url)
             case 'post':
                 return new HttpPost(url)
             case 'put':
@@ -121,10 +121,12 @@ class RequestBuilder {
                 return new HttpDelete(url)
             case 'options':
                 return new HttpOptions(url)
-            case 'patch':
-                return new HttpPatch(url)
             case 'trace':
                 return new HttpTrace(url)
+            case 'patch':
+                return new HttpPatch(url)
+            case 'query':
+                return new HttpUriRequestBase('QUERY', URI.create(url))
             default:
                 throw new UnsupportedOperationException("$method not supported")
         }
