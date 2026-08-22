@@ -6,15 +6,17 @@
 
 ### Supported HTTP methods:
 
-`GET`, `POST`, `PUT` and `DELETE` are supported:
+`GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `TRACE`, `PATCH` and `QUERY` are supported:
 ```groovy
 http.get()
+http.head()
 http.post()
 http.put()
 http.delete()
+http.options()
 http.trace()
 http.patch()
-http.options()
+http.query()
 ```
 
 ### A request to an arbitrary url:

@@ -52,15 +52,16 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name      | mockMethod        | clientMethod
-        'GET'     | WireMock.&get     | http.&get
-        'HEAD'    | WireMock.&head    | http.&head
-        'POST'    | WireMock.&post    | http.&post
-        'PUT'     | WireMock.&put     | http.&put
-        'DELETE'  | WireMock.&delete  | http.&delete
-        'TRACE'   | WireMock.&trace   | http.&trace
-        'PATCH'   | WireMock.&patch   | http.&patch
-        'OPTIONS' | WireMock.&options | http.&options
+        name      | mockMethod                               | clientMethod
+        'GET'     | WireMock.&get                            | http.&get
+        'HEAD'    | WireMock.&head                           | http.&head
+        'POST'    | WireMock.&post                           | http.&post
+        'PUT'     | WireMock.&put                            | http.&put
+        'DELETE'  | WireMock.&delete                         | http.&delete
+        'OPTIONS' | WireMock.&options                        | http.&options
+        'TRACE'   | WireMock.&trace                          | http.&trace
+        'PATCH'   | WireMock.&patch                          | http.&patch
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -77,15 +78,16 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name      | mockMethod        | clientMethod
-        'GET'     | WireMock.&get     | http.&get
-        'HEAD'    | WireMock.&head    | http.&head
-        'POST'    | WireMock.&post    | http.&post
-        'PUT'     | WireMock.&put     | http.&put
-        'DELETE'  | WireMock.&delete  | http.&delete
-        'TRACE'   | WireMock.&trace   | http.&trace
-        'PATCH'   | WireMock.&patch   | http.&patch
-        'OPTIONS' | WireMock.&options | http.&options
+        name      | mockMethod                               | clientMethod
+        'GET'     | WireMock.&get                            | http.&get
+        'HEAD'    | WireMock.&head                           | http.&head
+        'POST'    | WireMock.&post                           | http.&post
+        'PUT'     | WireMock.&put                            | http.&put
+        'DELETE'  | WireMock.&delete                         | http.&delete
+        'OPTIONS' | WireMock.&options                        | http.&options
+        'TRACE'   | WireMock.&trace                          | http.&trace
+        'PATCH'   | WireMock.&patch                          | http.&patch
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -102,15 +104,16 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name      | mockMethod        | clientMethod
-        'GET'     | WireMock.&get     | http.&get
-        'HEAD'    | WireMock.&head    | http.&head
-        'POST'    | WireMock.&post    | http.&post
-        'PUT'     | WireMock.&put     | http.&put
-        'DELETE'  | WireMock.&delete  | http.&delete
-        'TRACE'   | WireMock.&trace   | http.&trace
-        'PATCH'   | WireMock.&patch   | http.&patch
-        'OPTIONS' | WireMock.&options | http.&options
+        name      | mockMethod                               | clientMethod
+        'GET'     | WireMock.&get                            | http.&get
+        'HEAD'    | WireMock.&head                           | http.&head
+        'POST'    | WireMock.&post                           | http.&post
+        'PUT'     | WireMock.&put                            | http.&put
+        'DELETE'  | WireMock.&delete                         | http.&delete
+        'OPTIONS' | WireMock.&options                        | http.&options
+        'TRACE'   | WireMock.&trace                          | http.&trace
+        'PATCH'   | WireMock.&patch                          | http.&patch
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -127,15 +130,16 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name      | mockMethod        | clientMethod
-        'GET'     | WireMock.&get     | http.&get
-        'HEAD'    | WireMock.&head    | http.&head
-        'POST'    | WireMock.&post    | http.&post
-        'PUT'     | WireMock.&put     | http.&put
-        'DELETE'  | WireMock.&delete  | http.&delete
-        'TRACE'   | WireMock.&trace   | http.&trace
-        'PATCH'   | WireMock.&patch   | http.&patch
-        'OPTIONS' | WireMock.&options | http.&options
+        name      | mockMethod                               | clientMethod
+        'GET'     | WireMock.&get                            | http.&get
+        'HEAD'    | WireMock.&head                           | http.&head
+        'POST'    | WireMock.&post                           | http.&post
+        'PUT'     | WireMock.&put                            | http.&put
+        'DELETE'  | WireMock.&delete                         | http.&delete
+        'OPTIONS' | WireMock.&options                        | http.&options
+        'TRACE'   | WireMock.&trace                          | http.&trace
+        'PATCH'   | WireMock.&patch                          | http.&patch
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -155,10 +159,11 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name    | mockMethod      | clientMethod
-        'POST'  | WireMock.&post  | http.&post
-        'PUT'   | WireMock.&put   | http.&put
-        'PATCH' | WireMock.&patch | http.&patch
+        name    | mockMethod                               | clientMethod
+        'POST'  | WireMock.&post                           | http.&post
+        'PUT'   | WireMock.&put                            | http.&put
+        'PATCH' | WireMock.&patch                          | http.&patch
+        'QUERY' | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -179,10 +184,11 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name    | mockMethod      | clientMethod
-        'POST'  | WireMock.&post  | http.&post
-        'PUT'   | WireMock.&put   | http.&put
-        'PATCH' | WireMock.&patch | http.&patch
+        name    | mockMethod                               | clientMethod
+        'POST'  | WireMock.&post                           | http.&post
+        'PUT'   | WireMock.&put                            | http.&put
+        'PATCH' | WireMock.&patch                          | http.&patch
+        'QUERY' | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -202,10 +208,11 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name    | mockMethod      | clientMethod
-        'POST'  | WireMock.&post  | http.&post
-        'PUT'   | WireMock.&put   | http.&put
-        'PATCH' | WireMock.&patch | http.&patch
+        name    | mockMethod                               | clientMethod
+        'POST'  | WireMock.&post                           | http.&post
+        'PUT'   | WireMock.&put                            | http.&put
+        'PATCH' | WireMock.&patch                          | http.&patch
+        'QUERY' | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -227,15 +234,16 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name      | mockMethod        | clientMethod
-        'GET'     | WireMock.&get     | http.&get
-        'HEAD'    | WireMock.&head    | http.&head
-        'POST'    | WireMock.&post    | http.&post
-        'PUT'     | WireMock.&put     | http.&put
-        'DELETE'  | WireMock.&delete  | http.&delete
-        'TRACE'   | WireMock.&trace   | http.&trace
-        'PATCH'   | WireMock.&patch   | http.&patch
-        'OPTIONS' | WireMock.&options | http.&options
+        name      | mockMethod                               | clientMethod
+        'GET'     | WireMock.&get                            | http.&get
+        'HEAD'    | WireMock.&head                           | http.&head
+        'POST'    | WireMock.&post                           | http.&post
+        'PUT'     | WireMock.&put                            | http.&put
+        'DELETE'  | WireMock.&delete                         | http.&delete
+        'OPTIONS' | WireMock.&options                        | http.&options
+        'TRACE'   | WireMock.&trace                          | http.&trace
+        'PATCH'   | WireMock.&patch                          | http.&patch
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -254,14 +262,15 @@ class JavaAPISpec extends HttpClientSpec {
         response.body == 'ice-cream'
 
         where:
-        name      | mockMethod        | clientMethod
-        'GET'     | WireMock.&get     | http.&get
-        'POST'    | WireMock.&post    | http.&post
-        'PUT'     | WireMock.&put     | http.&put
-        'DELETE'  | WireMock.&delete  | http.&delete
-        'TRACE'   | WireMock.&trace   | http.&trace
-        'PATCH'   | WireMock.&patch   | http.&patch
-        'OPTIONS' | WireMock.&options | http.&options
+        name      | mockMethod                               | clientMethod
+        'GET'     | WireMock.&get                            | http.&get
+        'POST'    | WireMock.&post                           | http.&post
+        'PUT'     | WireMock.&put                            | http.&put
+        'DELETE'  | WireMock.&delete                         | http.&delete
+        'OPTIONS' | WireMock.&options                        | http.&options
+        'TRACE'   | WireMock.&trace                          | http.&trace
+        'PATCH'   | WireMock.&patch                          | http.&patch
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -281,14 +290,15 @@ class JavaAPISpec extends HttpClientSpec {
         response.body == [contents: ['ice-cream']]
 
         where:
-        name      | mockMethod        | clientMethod
-        'GET'     | WireMock.&get     | http.&get
-        'POST'    | WireMock.&post    | http.&post
-        'PUT'     | WireMock.&put     | http.&put
-        'DELETE'  | WireMock.&delete  | http.&delete
-        'TRACE'   | WireMock.&trace   | http.&trace
-        'PATCH'   | WireMock.&patch   | http.&patch
-        'OPTIONS' | WireMock.&options | http.&options
+        name      | mockMethod                               | clientMethod
+        'GET'     | WireMock.&get                            | http.&get
+        'POST'    | WireMock.&post                           | http.&post
+        'PUT'     | WireMock.&put                            | http.&put
+        'DELETE'  | WireMock.&delete                         | http.&delete
+        'OPTIONS' | WireMock.&options                        | http.&options
+        'TRACE'   | WireMock.&trace                          | http.&trace
+        'PATCH'   | WireMock.&patch                          | http.&patch
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -309,14 +319,15 @@ class JavaAPISpec extends HttpClientSpec {
         response.body == [[type: 'ice-cream']]
 
         where:
-        name      | mockMethod        | clientMethod
-        'GET'     | WireMock.&get     | http.&get
-        'POST'    | WireMock.&post    | http.&post
-        'PUT'     | WireMock.&put     | http.&put
-        'DELETE'  | WireMock.&delete  | http.&delete
-        'TRACE'   | WireMock.&trace   | http.&trace
-        'PATCH'   | WireMock.&patch   | http.&patch
-        'OPTIONS' | WireMock.&options | http.&options
+        name      | mockMethod                               | clientMethod
+        'GET'     | WireMock.&get                            | http.&get
+        'POST'    | WireMock.&post                           | http.&post
+        'PUT'     | WireMock.&put                            | http.&put
+        'DELETE'  | WireMock.&delete                         | http.&delete
+        'OPTIONS' | WireMock.&options                        | http.&options
+        'TRACE'   | WireMock.&trace                          | http.&trace
+        'PATCH'   | WireMock.&patch                          | http.&patch
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     def 'falls back to body as string for #name'() {
@@ -359,15 +370,16 @@ class JavaAPISpec extends HttpClientSpec {
         }
 
         where:
-        name      | mockMethod        | clientMethod
-        'GET'     | WireMock.&get     | http.&get
-        'HEAD'    | WireMock.&head    | http.&head
-        'POST'    | WireMock.&post    | http.&post
-        'PUT'     | WireMock.&put     | http.&put
-        'DELETE'  | WireMock.&delete  | http.&delete
-        'TRACE'   | WireMock.&trace   | http.&trace
-        'PATCH'   | WireMock.&patch   | http.&patch
-        'OPTIONS' | WireMock.&options | http.&options
+        name      | mockMethod                               | clientMethod
+        'GET'     | WireMock.&get                            | http.&get
+        'HEAD'    | WireMock.&head                           | http.&head
+        'POST'    | WireMock.&post                           | http.&post
+        'PUT'     | WireMock.&put                            | http.&put
+        'DELETE'  | WireMock.&delete                         | http.&delete
+        'OPTIONS' | WireMock.&options                        | http.&options
+        'TRACE'   | WireMock.&trace                          | http.&trace
+        'PATCH'   | WireMock.&patch                          | http.&patch
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -386,15 +398,16 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name      | mockMethod        | clientMethod
-        'GET'     | WireMock.&get     | http.&get
-        'HEAD'    | WireMock.&head    | http.&head
-        'POST'    | WireMock.&post    | http.&post
-        'PUT'     | WireMock.&put     | http.&put
-        'DELETE'  | WireMock.&delete  | http.&delete
-        'TRACE'   | WireMock.&trace   | http.&trace
-        'PATCH'   | WireMock.&patch   | http.&patch
-        'OPTIONS' | WireMock.&options | http.&options
+        name      | mockMethod                               | clientMethod
+        'GET'     | WireMock.&get                            | http.&get
+        'HEAD'    | WireMock.&head                           | http.&head
+        'POST'    | WireMock.&post                           | http.&post
+        'PUT'     | WireMock.&put                            | http.&put
+        'DELETE'  | WireMock.&delete                         | http.&delete
+        'OPTIONS' | WireMock.&options                        | http.&options
+        'TRACE'   | WireMock.&trace                          | http.&trace
+        'PATCH'   | WireMock.&patch                          | http.&patch
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | http.&query
     }
 
     @Unroll
@@ -416,14 +429,15 @@ class JavaAPISpec extends HttpClientSpec {
         response.statusCode == OK
 
         where:
-        name  | mockMethod        | fn
-        'GET' | WireMock.&get     | { h -> h.get() }
-        'GET' | WireMock.&head    | { h -> h.head() }
-        'GET' | WireMock.&post    | { h -> h.post() }
-        'GET' | WireMock.&put     | { h -> h.put() }
-        'GET' | WireMock.&delete  | { h -> h.delete() }
-        'GET' | WireMock.&trace   | { h -> h.trace() }
-        'GET' | WireMock.&patch   | { h -> h.patch() }
-        'GET' | WireMock.&options | { h -> h.options() }
+        name      | mockMethod                               | fn
+        'GET'     | WireMock.&get                            | { h -> h.get() }
+        'HEAD'    | WireMock.&head                           | { h -> h.head() }
+        'POST'    | WireMock.&post                           | { h -> h.post() }
+        'PUT'     | WireMock.&put                            | { h -> h.put() }
+        'DELETE'  | WireMock.&delete                         | { h -> h.delete() }
+        'OPTIONS' | WireMock.&options                        | { h -> h.options() }
+        'TRACE'   | WireMock.&trace                          | { h -> h.trace() }
+        'PATCH'   | WireMock.&patch                          | { h -> h.patch() }
+        'QUERY'   | { pattern -> request('QUERY', pattern) } | { h -> h.query() }
     }
 }
