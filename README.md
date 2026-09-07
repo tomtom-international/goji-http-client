@@ -87,6 +87,11 @@ class IceCreamTest {
 Full Java API reference is available [here](doc/JAVA.md)
 
 ## Changelog
+
+**[4.0.0](https://central.sonatype.com/artifact/com.tomtom.http/goji-http-client/4.0.0)**:
+* (chore) Jackson databind v3
+* (chore) Minimum Java version 17
+
 **[3.4.0](https://central.sonatype.com/artifact/com.tomtom.http/goji-http-client/3.4.0)**:
 * (feat) QUERY HTTP method support
 
@@ -122,7 +127,7 @@ Full Java API reference is available [here](doc/JAVA.md)
 
 GOJI HTTP uses the [semantic versioning](http://semver.org/) strategy: MAJOR.MINOR.PATCH.
 
-Check [Maven central repository](https://central.sonatype.com/artifact/com.tomtom.http/goji-http-client/3.4.0) for snippets to add the client as a dependency for your build system.  
+Check [Maven central repository](https://central.sonatype.com/artifact/com.tomtom.http/goji-http-client/4.0.0) for snippets to add the client as a dependency for your build system.  
 
 <a id='requests'></a>
 ## Request examples
