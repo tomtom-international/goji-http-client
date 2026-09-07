@@ -16,12 +16,13 @@
 
 package com.tomtom.http
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.client.WireMock
 import spock.lang.Unroll
+import tools.jackson.databind.json.JsonMapper
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static com.tomtom.http.response.ResponseCode.OK
+import static tools.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
 
 class GroovyAPISpec extends HttpClientSpec {
 
@@ -265,7 +266,9 @@ class GroovyAPISpec extends HttpClientSpec {
 
     def 'allows providing custom ObjectMapper and falls back to body as string for #name'() {
         given:
-        def mapper = new ObjectMapper()
+        def mapper = JsonMapper.builder()
+                .enable(FAIL_ON_UNKNOWN_PROPERTIES)
+                .build()
         def http = new HttpClient(mapper: mapper, baseUrl: "http://localhost:${mock.port()}")
         mock.givenThat(get(urlEqualTo('/freezer'))
                 .willReturn(ok('{"flavor": "vanilla", "chocolate_coated": false}')))

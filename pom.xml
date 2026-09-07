@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tomtom.http</groupId>
     <artifactId>goji-http-client</artifactId>
-    <version>3.4.0</version>
+    <version>4.0.0</version>
     <name>GOJI HTTP Client</name>
     <description>
         A wrapper around Apache HttpClient and Jackson Databind libraries with lean Groovy syntax.
@@ -51,7 +51,8 @@
     <properties>
         <groovy.version>5.1.2</groovy.version>
         <httpclient.version>5.6.4</httpclient.version>
-        <jackson-databind.version>2.22.2</jackson-databind.version>
+        <jackson-databind.version>3.2.2</jackson-databind.version>
+        <jackson-annotations.version>2.22</jackson-annotations.version>
 
         <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
         <gmavenplus-plugin.version>5.1.0</gmavenplus-plugin.version>
@@ -67,10 +68,41 @@
         <log4j.version>2.26.1</log4j.version>
         <spock.version>2.4-groovy-5.0</spock.version>
         <wiremock.version>3.13.2</wiremock.version>
+        <!-- Wiremock is still on jackson 2.x, keep the jackson 2.x artifacts at patched versions -->
+        <jackson2.version>2.22.2</jackson2.version>
 
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>${jackson2.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -86,18 +118,6 @@
             <version>${wiremock.version}</version>
             <scope>test</scope>
             <exclusions>
-                <exclusion>
-                    <artifactId>jackson-databind</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-annotations</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-core</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
                 <exclusion>
                     <artifactId>junit</artifactId>
                     <groupId>junit</groupId>
@@ -118,7 +138,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-databind.version}</version>
         </dependency>

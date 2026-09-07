@@ -16,12 +16,12 @@
 
 package com.tomtom.http
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.tomtom.http.response.Response
 import org.apache.hc.client5.http.classic.HttpClient as ApacheHttpClient
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder
+import tools.jackson.databind.ObjectMapper
+import tools.jackson.databind.json.JsonMapper
 
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
 import static org.apache.hc.client5.http.routing.RoutingSupport.determineHost
 
 class HttpClient {
@@ -103,7 +103,7 @@ class HttpClient {
     }
 
     private static ObjectMapper defaultMapper() {
-        new ObjectMapper().disable(FAIL_ON_UNKNOWN_PROPERTIES)
+        JsonMapper.shared()
     }
 
     private static ApacheHttpClient defaultClient() {

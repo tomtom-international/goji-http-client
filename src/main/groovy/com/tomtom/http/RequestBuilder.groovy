@@ -16,7 +16,6 @@
 
 package com.tomtom.http
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.tomtom.http.response.Response
 import groovy.transform.PackageScope
 import org.apache.hc.client5.http.classic.methods.*
@@ -27,6 +26,7 @@ import org.apache.hc.core5.http.io.entity.StringEntity
 import org.apache.hc.core5.http.message.BasicHeader
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import tools.jackson.databind.ObjectMapper
 
 import java.util.function.Function
 
@@ -34,7 +34,7 @@ import java.util.function.Function
 class RequestBuilder {
 
     private static Logger logger = LogManager.getLogger(HttpClient)
-    private ObjectMapper mapper = new ObjectMapper()
+    private ObjectMapper mapper
     private String baseUrl
     private Map defaultHeaders
 
