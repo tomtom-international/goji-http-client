@@ -16,9 +16,6 @@
 
 package com.tomtom.http
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.JavaType
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.tomtom.http.response.Response
 import groovy.transform.PackageScope
 import org.apache.hc.core5.http.HttpEntity
@@ -26,12 +23,15 @@ import org.apache.hc.core5.http.HttpResponse
 import org.apache.hc.core5.http.io.entity.EntityUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.JavaType
+import tools.jackson.databind.ObjectMapper
 
 @PackageScope
 class ResponseParser {
 
     private static Logger logger = LogManager.getLogger(HttpClient)
-    private mapper = new ObjectMapper()
+    private ObjectMapper mapper
 
     Response parse(HttpResponse response, Class type, Class subtype) {
         logger.info('=> response: {}', response.code)
